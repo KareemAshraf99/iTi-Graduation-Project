@@ -1,0 +1,125 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 0,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.458424400000069, 30.191351300000065]
+      },
+      "properties": { "FID": 0, "name": "وحدة إطفاء العبور" }
+    },
+    {
+      "type": "Feature",
+      "id": 1,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.465699700000073, 30.262725600000067]
+      },
+      "properties": {
+        "FID": 1,
+        "name": "وحدة مطافى اسكان الشباب بمدينة العبور"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 2,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.246534900000029, 30.116836900000067]
+      },
+      "properties": { "FID": 2, "name": "وحدة إطفاء شبرا الخيمة" }
+    },
+    {
+      "type": "Feature",
+      "id": 3,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.241183900000067, 30.243127400000049]
+      },
+      "properties": { "FID": 3, "name": "وحدة إطفاء طنان" }
+    },
+    {
+      "type": "Feature",
+      "id": 4,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.323252400000058, 30.198027000000025]
+      },
+      "properties": { "FID": 4, "name": "وحدة إطفاء سرياقوس" }
+    },
+    {
+      "type": "Feature",
+      "id": 5,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.270178200000032, 30.548520900000028]
+      },
+      "properties": { "FID": 5, "name": "وحدة إطفاء كفر شكر" }
+    },
+    {
+      "type": "Feature",
+      "id": 6,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.171094000000039, 30.43902810000003]
+      },
+      "properties": { "FID": 6, "name": "وحدة إطفاء بنها" }
+    },
+    {
+      "type": "Feature",
+      "id": 7,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.223826700000075, 30.18313610000007]
+      },
+      "properties": { "FID": 7, "name": "وحدة إطفاء قليوب" }
+    },
+    {
+      "type": "Feature",
+      "id": 8,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.275633400000061, 30.139264900000057]
+      },
+      "properties": { "FID": 8, "name": "وحدة إطفاء بهتيم" }
+    },
+    {
+      "type": "Feature",
+      "id": 9,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.311028600000043, 30.153528200000039]
+      },
+      "properties": { "FID": 9, "name": "وحدة إطفاء الخصوص" }
+    },
+    {
+      "type": "Feature",
+      "id": 10,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.173902600000076, 30.480915400000072]
+      },
+      "properties": { "FID": 10, "name": "وحدة إطفاء كفر الجزار بنها" }
+    },
+    {
+      "type": "Feature",
+      "id": 11,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.143955300000073, 30.304132000000038]
+      },
+      "properties": { "FID": 11, "name": "وحدة إطفاء اجهور الكبرى" }
+    },
+    {
+      "type": "Feature",
+      "id": 12,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.272356900000034, 30.425373600000057]
+      },
+      "properties": { "FID": 12, "name": "وحدة إطفاء بتمدة" }
+    }
+  ]
+}

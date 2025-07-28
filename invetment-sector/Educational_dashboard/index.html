@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القطاع التعليمي - محافظة القليوبية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-school heading-icon"></i>القطاع التعليمي</h1>
+            <p>عرض لأهم مؤشرات وفرص الاستثمار في التعليم بمحافظة القليوبية</p>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-value">{{ table_data|length }}</div>
+                <div class="stat-label">عدد المواقع</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">{{ filtered_centers|length }}</div>
+                <div class="stat-label">عدد المراكز</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">{{ (priority_counts.get('تحتاج مدرسة - أولوية قصوى', 0) + priority_counts.get('تحتاج مدرسة - أولوية جيدة', 0) + priority_counts.get('تحتاج مدرسة - أولوية مقبولة', 0)) }}</div>
+                <div class="stat-label">إجمالي الأولويات</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">
+                    {% if avg_main_dist %} {{ avg_main_dist }} م {% else %} غير متوفر {% endif %}
+                </div>
+                <div class="stat-label">متوسط المسافة للطريق الرئيسي</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <form method="GET" action="/">
+                <label for="center"><i class="fas fa-map-marker-alt"></i> اختر المركز:</label>
+                <select name="center" id="center">
+                    <option value="">الكل</option>
+                    {% for center in all_centers %}
+                        <option value="{{ center }}" {% if center == selected_center %}selected{% endif %}>{{ center }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="priority"><i class="fas fa-star"></i> اختر الأولوية:</label>
+                <select name="priority" id="priority">
+                    <option value="">الكل</option>
+                    <option value="تحتاج مدرسة - أولوية قصوى" {% if "قصوى" == selected_priority %}selected{% endif %}>أولوية قصوى</option>
+                    <option value="تحتاج مدرسة - أولوية جيدة" {% if "جيدة" == selected_priority %}selected{% endif %}>أولوية جيدة</option>
+                    <option value="تحتاج مدرسة - أولوية مقبولة" {% if "مقبولة" == selected_priority %}selected{% endif %}>أولوية مقبولة</option>
+                    <option value="تحتاج مدرسة - غير مناسبة" {% if "غير_مناسبة" == selected_priority %}selected{% endif %}> غير مناسبة</option>
+                </select>
+
+                <button type="submit"><i class="fas fa-filter"></i> تصفية النتائج</button>
+            </form>
+
+            <form id="uploadForm" method="POST" action="/upload" enctype="multipart/form-data" style="margin-right: auto;">
+                <label for="file-upload" class="file-upload-btn">
+                    <i class="fas fa-file-upload"></i> تحميل ملف بيانات
+                </label>
+                <input id="file-upload" type="file" name="file" class="file-upload-input" accept=".shp,.geojson,.csv" required>
+                <button type="submit" class="file-upload-btn" style="margin-left: 0;">
+                    <i class="fas fa-chart-line"></i> تحليل البيانات
+                </button>
+            </form>
+        </div>
+
+        <div class="content-row">
+            <div class="map-area">
+                <div class="map-container">
+                    <h2><i class="fas fa-map"></i> الخريطة التفاعلية</h2>
+                    <div class="map-frame">
+                        {{ map_html|safe }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <h2><i class="fas fa-chart-bar"></i> الاحصائيات</h2>
+                
+                <div class="chart-box">
+                    <h3><i class="fas fa-chart-pie"></i> توزيع المواقع حسب الأولوية</h3>
+                    <canvas id="priorityChart"></canvas>
+                </div>
+                
+                <div class="chart-box">
+                    <h3><i class="fas fa-chart-bar"></i> توزيع المواقع حسب المركز</h3>
+                    <canvas id="centerChart"></canvas>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <a href="http://127.0.0.1:5500/homepage/Home.html" class="back">⟵ الرجوع إلى الصفحة الرئيسية</a>
+    <script id="priority-data" type="application/json">
+    {{ priority_counts|tojson }}
+    </script>
+
+    <script id="center-data" type="application/json">
+    {{ center_counts|tojson }}
+    </script>
+    <script src="script.js"></script>
+    
+</body>
+</html>

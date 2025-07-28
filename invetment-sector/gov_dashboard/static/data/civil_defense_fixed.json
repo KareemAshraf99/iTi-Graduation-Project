@@ -1,0 +1,20 @@
+{
+"type": "FeatureCollection",
+"name": "civil_defense_fixed",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "FID": 0, "Name": "وحدة إطفاء العبور" }, "geometry": { "type": "Point", "coordinates": [ 31.458424400000069, 30.191351300000065 ] } },
+{ "type": "Feature", "properties": { "FID": 1, "Name": "وحدة مطافى اسكان الشباب بمدينة العبور" }, "geometry": { "type": "Point", "coordinates": [ 31.465699700000073, 30.262725600000067 ] } },
+{ "type": "Feature", "properties": { "FID": 2, "Name": "وحدة إطفاء شبرا الخيمة" }, "geometry": { "type": "Point", "coordinates": [ 31.246534900000029, 30.116836900000067 ] } },
+{ "type": "Feature", "properties": { "FID": 3, "Name": "وحدة إطفاء طنان" }, "geometry": { "type": "Point", "coordinates": [ 31.241183900000067, 30.243127400000049 ] } },
+{ "type": "Feature", "properties": { "FID": 4, "Name": "وحدة إطفاء سرياقوس" }, "geometry": { "type": "Point", "coordinates": [ 31.323252400000058, 30.198027 ] } },
+{ "type": "Feature", "properties": { "FID": 5, "Name": "وحدة إطفاء كفر شكر" }, "geometry": { "type": "Point", "coordinates": [ 31.270178200000032, 30.548520900000028 ] } },
+{ "type": "Feature", "properties": { "FID": 6, "Name": "وحدة إطفاء بنها" }, "geometry": { "type": "Point", "coordinates": [ 31.171094, 30.43902810000003 ] } },
+{ "type": "Feature", "properties": { "FID": 7, "Name": "وحدة إطفاء قليوب" }, "geometry": { "type": "Point", "coordinates": [ 31.223826700000075, 30.18313610000007 ] } },
+{ "type": "Feature", "properties": { "FID": 8, "Name": "وحدة إطفاء بهتيم" }, "geometry": { "type": "Point", "coordinates": [ 31.275633400000061, 30.139264900000057 ] } },
+{ "type": "Feature", "properties": { "FID": 9, "Name": "وحدة إطفاء الخصوص" }, "geometry": { "type": "Point", "coordinates": [ 31.311028600000043, 30.153528200000039 ] } },
+{ "type": "Feature", "properties": { "FID": 10, "Name": "وحدة إطفاء كفر الجزار بنها" }, "geometry": { "type": "Point", "coordinates": [ 31.173902600000076, 30.480915400000072 ] } },
+{ "type": "Feature", "properties": { "FID": 11, "Name": "وحدة إطفاء اجهور الكبرى" }, "geometry": { "type": "Point", "coordinates": [ 31.143955300000073, 30.304132 ] } },
+{ "type": "Feature", "properties": { "FID": 12, "Name": "وحدة إطفاء بتمدة" }, "geometry": { "type": "Point", "coordinates": [ 31.272356900000034, 30.425373600000057 ] } }
+]
+}

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title class="readable-text" data-lang-key="page_title">
+      البوابة الجغرافية للقطاعات الحكومية - خدمات التوجيه والملاحة
+    </title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="../style/vars.css" />
+    <link rel="stylesheet" href="../style/main.css" />
+    <link rel="stylesheet" href="../style/common-elements.css" />
+    <link rel="stylesheet" href="../style/accessibility.css" />
+    <link rel="stylesheet" href="../style/media.css" />
+    <link rel="stylesheet" href="../style/routing.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo&family=Indie+Flower&family=Lalezar&family=Qahiri&family=UoqMunThenKhung&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="../assets/ico.png" type="image/png" />
+  </head>
+  <body>
+    <div class="progress-indicator">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <main class="main-content">
+      <div class="container">
+        <div class="page-header">
+          <h1
+            class="page-title readable-text"
+            data-lang-key="routing_page_title"
+          >
+            خدمات التوجيه والملاحة
+          </h1>
+          <p
+            class="page-subtitle readable-text"
+            data-lang-key="routing_page_subtitle"
+          >
+            اكتشف أقرب الخدمات الحكومية واحصل على اتجاهات مفصلة للوصول إليها
+          </p>
+        </div>
+
+        <nav class="tab-navigation">
+          <button class="tab-button active" data-tab="government-services">
+            <i class="fas fa-building"></i>
+            <span class="readable-text" data-lang-key="government_services"
+              >الخدمات الحكومية</span
+            >
+          </button>
+          <button class="tab-button" data-tab="security-services">
+            <i class="fas fa-shield-alt"></i>
+            <span class="readable-text" data-lang-key="security_services"
+              >الخدمات الأمنية</span
+            >
+          </button>
+          <button class="tab-button" data-tab="civil-protection">
+            <i class="fas fa-fire-extinguisher"></i>
+            <span class="readable-text" data-lang-key="civil_protection"
+              >مراكز الحماية المدنية</span
+            >
+          </button>
+          <button class="tab-button" data-tab="shelters">
+            <i class="fas fa-home"></i>
+            <span class="readable-text" data-lang-key="shelters"
+              >مراكز الإيواء ودور الضيافة</span
+            >
+          </button>
+          <button class="tab-button" data-tab="documentation">
+            <i class="fas fa-file-alt"></i>
+            <span class="readable-text" data-lang-key="documentation"
+              >مراكز التوثيق والشهر العقاري</span
+            >
+          </button>
+          <button class="tab-button" data-tab="telecommunications">
+            <i class="fas fa-phone"></i>
+            <span class="readable-text" data-lang-key="telecommunications"
+              >مراكز الاتصالات</span
+            >
+          </button>
+        </nav>
+
+        <div class="routing-layout">
+          <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+              <h3>
+                <i class="fas fa-list"></i>
+                <span class="readable-text" data-lang-key="services_list"
+                  >قائمة الخدمات</span
+                >
+              </h3>
+              <button id="closeSidebar" class="btn-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+
+            <div class="sidebar-search">
+              <div class="search-box">
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="البحث في الخدمات..."
+                  class="readable-text"
+                  data-lang-key="search_placeholder"
+                />
+                <i class="fas fa-search"></i>
+              </div>
+              <div class="filter-controls">
+                <select id="districtFilter">
+                  <option
+                    value=""
+                    class="readable-text"
+                    data-lang-key="all_districts"
+                  >
+                    جميع المناطق
+                  </option>
+                </select>
+                <button id="clearFilters" class="btn-secondary">
+                  <i class="fas fa-times"></i>
+                  <span class="readable-text" data-lang-key="clear_filters"
+                    >مسح الفلاتر</span
+                  >
+                </button>
+              </div>
+            </div>
+
+            <div class="sidebar-content">
+              <div id="servicesList" class="services-list"></div>
+            </div>
+          </aside>
+
+          <div class="map-section">
+            <div class="map-controls">
+              <div class="control-group-none">
+                <button
+                  id="toggleSidebar"
+                  class="btn-control"
+                  title="إظهار/إخفاء الشريط الجانبي"
+                >
+                  <i class="fas fa-bars"></i>
+                </button>
+
+                <button id="locateUser" class="btn-control" title="تحديد موقعي">
+                  <i class="fas fa-location-arrow"></i>
+                </button>
+              </div>
+              <div class="control-group-none">
+                <button
+                  id="measureDistance"
+                  class="btn-control"
+                  title="قياس المسافة"
+                >
+                  <i class="fas fa-ruler"></i>
+                </button>
+                <button id="drawArea" class="btn-control" title="رسم منطقة">
+                  <i class="fas fa-draw-polygon"></i>
+                </button>
+                <button
+                  id="heatmapToggle"
+                  class="btn-control"
+                  title="خريطة الكثافة"
+                >
+                  <i class="fas fa-fire"></i>
+                </button>
+                <button id="printMap" class="btn-control" title="طباعة الخريطة">
+                  <i class="fas fa-print"></i>
+                </button>
+              </div>
+              <div class="control-group">
+                <button
+                  id="resetView"
+                  class="btn-control"
+                  title="إعادة تعيين العرض"
+                >
+                  <i class="fas fa-home"></i>
+                </button>
+                <button id="fullscreen" class="btn-control" title="ملء الشاشة">
+                  <i class="fas fa-expand"></i>
+                </button>
+                <button
+                  id="toggleAnalytics"
+                  class="btn-control"
+                  title="إظهار/إخفاء لوحة التحليلات"
+                >
+                  <i class="fas fa-chart-bar"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="tab-content">
+              <div class="tab-panel active" id="government-services">
+                <div class="map-container">
+                  <div id="map-government" class="map"></div>
+                </div>
+              </div>
+
+              <div class="tab-panel" id="security-services">
+                <div class="map-container">
+                  <div id="map-security" class="map"></div>
+                </div>
+              </div>
+
+              <div class="tab-panel" id="civil-protection">
+                <div class="map-container">
+                  <div id="map-civil" class="map"></div>
+                </div>
+              </div>
+
+              <div class="tab-panel" id="shelters">
+                <div class="map-container">
+                  <div id="map-shelters" class="map"></div>
+                </div>
+              </div>
+
+              <div class="tab-panel" id="documentation">
+                <div class="map-container">
+                  <div id="map-documentation" class="map"></div>
+                </div>
+              </div>
+
+              <div class="tab-panel" id="telecommunications">
+                <div class="map-container">
+                  <div id="map-telecommunications" class="map"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="navigationPanel" class="navigation-panel">
+            <div class="navigation-header">
+              <h3>
+                <i class="fas fa-route"></i>
+                <span class="readable-text" data-lang-key="navigation_details"
+                  >تفاصيل التوجيه</span
+                >
+              </h3>
+              <button id="closeNavigation" class="btn-close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="navigation-content">
+              <div id="routeInfo" class="route-info">
+                <div class="route-summary">
+                  <div class="summary-item">
+                    <i class="fas fa-road"></i>
+                    <span class="readable-text" data-lang-key="distance"
+                      >المسافة:</span
+                    >
+                    <span id="routeDistance">--</span>
+                  </div>
+                  <div class="summary-item">
+                    <i class="fas fa-clock"></i>
+                    <span class="readable-text" data-lang-key="duration"
+                      >المدة:</span
+                    >
+                    <span id="routeDuration">--</span>
+                  </div>
+                  <div class="summary-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="readable-text" data-lang-key="destination"
+                      >الوجهة:</span
+                    >
+                    <span id="routeDestination">--</span>
+                  </div>
+                </div>
+              </div>
+              <div id="routeInstructions" class="route-instructions">
+                <h4 class="readable-text" data-lang-key="turn_by_turn">
+                  الاتجاهات خطوة بخطوة
+                </h4>
+                <div id="instructionsList" class="instructions-list"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="analyticsPanel" class="analytics-panel">
+      <div class="analytics-header">
+        <h3>
+          <i class="fas fa-chart-line"></i>
+          <span class="readable-text" data-lang-key="analytics_panel"
+            >لوحة التحليلات</span
+          >
+        </h3>
+        <button id="closeAnalytics" class="btn-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="analytics-content">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-building"></i></div>
+            <div class="stat-info">
+              <div class="stat-number" id="totalServices">0</div>
+              <div
+                class="stat-label readable-text"
+                data-lang-key="total_services"
+              >
+                إجمالي الخدمات
+              </div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="stat-info">
+              <div class="stat-number" id="currentTabServices">0</div>
+              <div
+                class="stat-label readable-text"
+                data-lang-key="current_tab_services"
+              >
+                خدمات القطاع الحالي
+              </div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-eye"></i></div>
+            <div class="stat-info">
+              <div class="stat-number" id="visibleServices">0</div>
+              <div
+                class="stat-label readable-text"
+                data-lang-key="visible_services"
+              >
+                الخدمات المرئية
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="servicesChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay">
+      <div class="loading-spinner"></div>
+      <div class="loading-text readable-text" data-lang-key="loading">
+        جاري التحميل...
+      </div>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
+    <script src="../script/languages.js"></script>
+    <script src="../script/main.js"></script>
+    <script src="../script/theme.js"></script>
+    <script src="../script/commonElements.js"></script>
+    <script src="../script/accessibility.js"></script>
+    <script src="../script/routing.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        loadNavbar("../");
+        loadFooter("../");
+        initializeRoutingPage();
+      });
+    </script>
+  </body>
+</html>

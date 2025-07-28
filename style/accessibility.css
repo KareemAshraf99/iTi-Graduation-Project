@@ -1,0 +1,477 @@
+/* Accessibility Panel Styles */
+.accessibility-panel {
+  position: fixed;
+  top: 0;
+  right: -350px; /* Hidden by default, increased width */
+  width: 320px;
+  height: 100%;
+  background-color: var(--accessibility-bg-color);
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease-in-out;
+  z-index: 1001;
+  border-left: 1px solid var(--accessibility-border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.accessibility-panel.active {
+  right: 0; /* Show panel */
+}
+
+[dir="ltr"] .accessibility-panel {
+  left: -350px;
+  right: auto;
+  border-right: 1px solid var(--accessibility-border-color);
+  border-left: none;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+[dir="ltr"] .accessibility-panel.active {
+  left: 0;
+  right: auto;
+}
+
+/* Sticky header for accessibility panel */
+.accessibility-panel-header {
+  position: sticky;
+  top: 0;
+  background: var(--accessibility-header-bg-color);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--accessibility-border-color);
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accessibility-panel-header h3 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--accessibility-title-color);
+}
+
+.accessibility-close-btn {
+  background: none;
+  border: none;
+  color: var(--accessibility-x-btn-color);
+  font-size: var(--text-lg);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.accessibility-close-btn:hover {
+  background: var(--accessibility-x-btn-bg-hover-color);
+  color: var(--accessibility-x-btn-hover-color);
+}
+
+/* Scrollable content area */
+.accessibility-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accessibility-scrollbar-color-1)
+    var(--accessibility-scrollbar-color-2);
+}
+
+/* Webkit scrollbar styling for better visibility */
+.accessibility-panel-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.accessibility-panel-content::-webkit-scrollbar-track {
+  background: var(--accessibility-scrollbar-track);
+  border-radius: 4px;
+}
+
+.accessibility-panel-content::-webkit-scrollbar-thumb {
+  background: var(--accessibility-scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.accessibility-panel-content::-webkit-scrollbar-thumb:hover {
+  background: var(--accessibility-scrollbar-thumb-hover);
+}
+
+/* Sticky footer for reset button */
+.accessibility-panel-footer {
+  position: sticky;
+  bottom: 0;
+  background-color: var(--accessibility-footer-bg-color);
+  padding: 10px 20px 20px 20px;
+  border-top: 1px solid var(--accessibility-border-color);
+  z-index: 2;
+}
+
+.accessibility-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Accessibility Groups */
+.accessibility-group {
+  background-color: var(--accessibility-groub-bg-color);
+  border-radius: var(--radius-lg);
+  padding: 15px;
+  border: 1px solid var(--accessibility-groub-border-color);
+}
+
+.accessibility-group h4 {
+  color: var(--accessibility-groub-title-color);
+  font-size: 1rem;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: 600;
+  border-bottom: 1px solid var(--accessibility-border-color);
+  padding-bottom: 8px;
+}
+
+.accessibility-group-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+/* Accessibility Option Buttons - Small Boxes */
+.accessibility-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  background-color: var(--accessibility-btn-bg-color);
+  color: var(--accessibility-btn-txt-color);
+  border: 2px solid var(--accessibility-btn-border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-align: center;
+  min-height: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.accessibility-option-btn i {
+  font-size: 1.4rem;
+  color: var(--accessibility-btn-icon-color);
+  transition: all 0.3s ease;
+}
+
+.accessibility-option-btn span {
+  line-height: 1.2;
+  font-size: 0.75rem;
+}
+
+.accessibility-option-btn:hover {
+  background-color: var(--accessibility-btn-bg-hover-color);
+  border-color: var(--accessibility-btn-border-hover-color);
+  color: var(--accessibility-btn-txt-hover-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.accessibility-option-btn:hover i {
+  color: var(--accessibility-btn-icon-hover-color);
+  transform: scale(1.1);
+}
+
+.accessibility-option-btn.active {
+  background-color: var(--accessibility-btn-active-bg-color);
+  color: var(--accessibility-btn-active-txt-color);
+  border-color: var(--accessibility-btn-active-border-color);
+  box-shadow: var(--shadow-md);
+}
+
+.accessibility-option-btn.active i {
+  color: var(--accessibility-btn-active-icon-color);
+}
+
+.accessibility-option-btn.active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    var(--accessibility-btn-active-before),
+    transparent 70%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Specific Accessibility Effects */
+
+/* High Contrast - Fixed to preserve scrollbar */
+body.high-contrast {
+  filter: contrast(200%);
+}
+
+/* Preserve scrollbar visibility in high contrast mode */
+body.high-contrast ::-webkit-scrollbar {
+  filter: contrast(50%) !important;
+}
+
+body.high-contrast ::-webkit-scrollbar-track {
+  background: var(--contrast-scrollbar-track-color) !important;
+}
+
+body.high-contrast ::-webkit-scrollbar-thumb {
+  background: var(--contrast-scrollbar-track-thumb) !important;
+}
+
+/* Ensure accessibility panel scrollbar remains visible */
+body.high-contrast .accessibility-panel-content::-webkit-scrollbar {
+  filter: none !important;
+  width: 8px !important;
+}
+
+body.high-contrast .accessibility-panel-content::-webkit-scrollbar-track {
+  background: var(--gray-200) !important;
+}
+
+body.high-contrast .accessibility-panel-content::-webkit-scrollbar-thumb {
+  background: var(--primary-color) !important;
+}
+
+/* Invert Colors */
+body.invert-colors {
+  filter: invert(100%);
+}
+
+/* Grayscale */
+body.grayscale {
+  filter: grayscale(100%);
+}
+
+/* Reading Mask */
+body.reading-mask::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  pointer-events: none; /* Allow interaction with elements beneath */
+  z-index: 999; /* Below accessibility panel, above content */
+}
+
+body.reading-mask::after {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 50px; /* Height of the "reading line" */
+  background-color: rgba(255, 255, 255, 0.2); /* Light transparent line */
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* Highlight Links */
+body.highlight-links a {
+  outline: 3px solid var(--accessibility-links-highlight-color) !important;
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Reading Guide - Dynamic ruler that follows mouse */
+.reading-guide {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 80%,
+    transparent 100%
+  );
+  border-top: 2px solid rgba(255, 255, 255, 0.6);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  z-index: 999;
+  transition: top 0.1s ease-out;
+  box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Prevent accessibility panel from being affected by invert colors */
+body.invert-colors .accessibility-panel {
+  filter: invert(100%) hue-rotate(180deg);
+}
+
+/* Reset button specific styling */
+.accessibility-option-btn.reset-btn {
+  background-color: var(--accessibility-btn-reset-bg);
+  color: var(--accessibility-btn-reset-txt);
+  border-color: var(--accessibility-btn-reset-border);
+}
+
+.accessibility-option-btn.reset-btn:hover {
+  background-color: var(--accessibility-btn-reset-bg-hover);
+  border-color: var(--accessibility-btn-reset-txt-hover);
+  color: var(--accessibility-btn-reset-border-hover);
+}
+
+.accessibility-option-btn.reset-btn i {
+  color: var(--accessibility-btn-reset-icon);
+}
+
+.accessibility-option-btn.reset-btn:hover i {
+  color: var(--accessibility-btn-reset-icon-hover);
+}
+
+/* Text Spacing */
+body.text-spacing * {
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+
+/* Line Height */
+body.line-height * {
+  line-height: 1.8 !important;
+}
+
+/* Content Scaling */
+body.content-scaling {
+  zoom: 1.2;
+}
+
+/* Reduce Motion */
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Focus Highlight */
+body.focus-highlight *:focus {
+  outline: 4px solid var(--accessibility-foucs-color) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 6px rgba(255, 107, 53, 0.3) !important;
+}
+
+/* Cursor Size */
+body.cursor-size,
+body.cursor-size * {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><polygon points='0,0 0,24 8,18 14,26 18,24 12,16 24,16' fill='black'/><polygon points='2,2 2,20 6,17 10,23 12,22 8,16 20,16' fill='white'/></svg>")
+      0 0,
+    auto !important;
+}
+
+/* Font Size Adjustments - Fixed Implementation */
+body.font-increase {
+  font-size: 1.15em !important; /* Increase base font size */
+}
+
+body.font-decrease {
+  font-size: 0.85em !important; /* Decrease base font size */
+}
+
+/* Ensure font size changes apply to all text elements */
+body.font-increase *,
+body.font-increase .readable-text {
+  font-size: inherit;
+}
+
+body.font-decrease *,
+body.font-decrease .readable-text {
+  font-size: inherit;
+}
+
+/* Mobile Responsiveness for Accessibility Panel */
+@media (max-width: 768px) {
+  .accessibility-panel {
+    width: 280px;
+    right: -280px;
+  }
+
+  [dir="ltr"] .accessibility-panel {
+    left: -280px;
+  }
+
+  .accessibility-group-items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .accessibility-option-btn {
+    min-height: 70px;
+    padding: 10px 6px;
+  }
+
+  .accessibility-option-btn i {
+    font-size: 1.2rem;
+  }
+
+  .accessibility-option-btn span {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .accessibility-panel {
+    width: 100%;
+    right: -100%;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 15px;
+  }
+
+  [dir="ltr"] .accessibility-panel {
+    left: -100%;
+  }
+
+  .accessibility-panel.active {
+    right: 0;
+    left: 0;
+  }
+
+  .accessibility-group-items {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .accessibility-option-btn {
+    font-size: 0.75rem;
+    padding: 8px 4px;
+    min-height: 60px;
+  }
+
+  .accessibility-option-btn i {
+    font-size: 1.1rem;
+  }
+
+  .accessibility-option-btn span {
+    font-size: 0.65rem;
+  }
+}

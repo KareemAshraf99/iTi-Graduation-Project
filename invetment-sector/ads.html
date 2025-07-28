@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ROI</title>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      font-size: large;
+      perspective: 1000px;
+      overflow-x: hidden;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #004085;
+      margin-top: 20px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .section {
+      background: #ffffff;
+      margin: 20px auto;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      max-width: 900px;
+      animation: fadeInUp 1s ease forwards;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+    .section:hover {
+      transform: scale(1.02) rotateX(1deg) rotateY(-1deg);
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+      color: #004085;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-sizing: border-box;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+      background: #fdfdfd;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #1c2e92;
+      box-shadow: 0 0 10px rgba(19, 85, 185, 0.4);
+      background-color: #f1fefc;
+      transform: scale(1.01);
+    }
+    button {
+      background: linear-gradient(#092558);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: linear-gradient(to right, #0a4d8d, #121e85);
+      cursor: pointer;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background-color: #1c4788;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f5f5f5;
+    }
+    tr:hover {
+      background-color: #e0f2f1;
+    }
+    .map-container {
+      height: 350px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    details summary {
+      font-weight: bold;
+      color: #1f5cad;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    details[open] summary {
+      color: #1e5991;
+    }
+    pre {
+      white-space: pre-wrap;
+      background: #f1f1f1;
+      padding: 20px;
+      border-radius: 12px;
+      font-family: 'Courier New', monospace;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;"></div>
+  <h1> نموذج مبسط </h1>
+  <div class="section animate__animated animate__zoomIn">
+    <h2>أضف أرض للاستثمار</h2>
+    <form id="addLandForm">
+      <label>اختر الأرض:</label>
+      <select id="landName" required>
+        <option value="">اختر الأرض</option>
+      </select>
+      <label>اختر سعر المتر (جنيه):</label>
+      <select id="pricePerMeter" required>
+        <option value="">اختر السعر</option>
+      </select>
+      <label>اختر المساحة (متر مربع):</label>
+      <select id="area" required>
+        <option value="">اختر المساحة</option>
+      </select>
+      <label>نوع الاستثمار:</label>
+      <select id="investmentType" required>
+        <option value="">اختر النوع</option>
+        <option value="زراعي">زراعي</option>
+        <option value="تعليمي">تعليمي</option>
+        <option value="مساكن">مساكن</option>
+        <option value="استثماري">استثماري</option>
+      </select>
+      <label>تكلفة التطوير لكل متر (جنيه):</label>
+      <input type="number" id="developmentCostPerSqm" min="0" value="0" required />
+      <label>مدة الاستثمار (سنة):</label>
+      <input type="number" id="investmentDuration" min="1" value="1" required />
+      <button type="submit">أضف الأرض</button>
+    </form>
+  </div>
+  <div class="section" id="landsSection" style="display:none;">
+    <h2>الأراضي المضافة</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>الأرض</th>
+          <th>سعر المتر</th>
+          <th>المساحة</th>
+          <th>نوع الاستثمار</th>
+          <th>تكلفة التطوير</th>
+          <th>مدة الاستثمار</th>
+          <th>نسبة العائد السنوي (%)</th>
+          <th>العائد الكلي (جنيه)</th>
+          <th>ROI (%)</th>
+          <th>مدة استرداد رأس المال (سنة)</th>
+          <th>تقدير سعر البيع الكلي (جنيه)</th>
+        </tr>
+      </thead>
+      <tbody id="landsTableBody"></tbody>
+    </table>
+  </div>
+  <!-- <div class="section">
+    <h2>مقارنة الأراضي</h2>
+    <p>يمكنك مقارنة تفاصيل الأراضي المختلفة في الجدول أعلاه.</p>
+  </div> -->
+  <!-- <div class="section">
+    <h2>خريطة تفاعلية للأراضي</h2>
+    <div id="map" class="map-container"></div>
+  </div> -->
+  <!-- <div class="section">
+    <h2>تقرير مختصر عن الأراضي</h2>
+    <button onclick="generateReport()">عرض التقرير كنص</button>
+    <button onclick="downloadReportPDF()">تحميل التقرير كـ PDF</button> 
+    <pre id="reportArea" style="background:#eee; padding:10px; margin-top:10px; max-height:300px; overflow:auto;"></pre>
+  </div> -->
+  <div class="section">
+    <h2>أسئلة وأجوبة شائعة</h2>
+    <details>
+      <summary>ما هي تكلفة التطوير وكيفية حسابها؟</summary>
+      <p>تكلفة التطوير هي تكلفة تجهيز الأرض من بنية تحتية وغيرها، وتحسب بناءً على سعر تطوير المتر ومساحة الأرض.</p>
+    </details>
+    <details>
+      <summary>كيف يمكنني تقدير العائد المتوقع؟</summary>
+      <p>نسبة العائد السنوي ونسبة سعر البيع المتوقع تحسب تلقائياً بناءً على نوع الاستثمار وتكاليف التطوير.</p>
+    </details>
+    <details>
+      <summary>ما هي مدة استرداد رأس المال؟</summary>
+      <p>هي الفترة الزمنية اللازمة لاسترجاع رأس المال المستثمر من الأرباح السنوية.</p>
+    </details>
+    <details>
+      <summary>هل يمكنني إضافة أكثر من أرض؟</summary>
+      <p>نعم، يمكنك إضافة أراضٍ متعددة ومقارنة العوائد بينهم في الجدول.</p>
+    </details>
+    <details>
+      <summary>هل يمكن تعديل بيانات الأرض بعد الإضافة؟</summary>
+      <p>حالياً لا يدعم الموقع تعديل البيانات بعد الإضافة، لكن يمكن حذف وإعادة الإضافة مستقبلاً.</p>
+    </details>
+  </div>
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": "#00796b" },
+        "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" } },
+        "opacity": { "value": 0.4, "random": true },
+        "size": { "value": 5, "random": true },
+        "line_linked": { "enable": true, "distance": 150, "color": "#004d40", "opacity": 0.4, "width": 1 },
+        "move": { "enable": true, "speed": 3, "direction": "none", "random": false, "straight": false, "out_mode": "bounce" }
+      },
+      "interactivity": {
+        "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } }
+      },
+      "retina_detect": true
+    });
+
+    let lands = [];
+    let jsonData = [];
+    let map;
+    let currentMarker = null;
+
+    // Map JSON investment types to form options
+    const typeMapping = {
+      'سكنى مقترح': 'مساكن',
+      'تعليمى مقترح': 'تعليمي',
+      'استصلاح واستزراع': 'زراعي',
+      'خدمى مقترح': 'استثماري',
+      'صناعي - طرق': 'استثماري'
+    };
+
+    // Initialize Leaflet map
+    function initMap() {
+      map = L.map('map').setView([30.0444, 31.2357], 6);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+    }
+
+    // Fetch JSON data and populate landName select
+    fetch('./lands.json')
+      .then(response => response.json())
+      .then(data => {
+        jsonData = data.features;
+        const landSelect = document.getElementById('landName');
+
+        // Populate land names
+        jsonData.forEach(feature => {
+          const option = document.createElement('option');
+          option.value = feature.properties['اسم_ا'] || 'أرض بدون اسم';
+          option.textContent = feature.properties['اسم_ا'] || 'أرض بدون اسم';
+          landSelect.appendChild(option);
+        });
+      })
+      .catch(error => console.error('Error fetching JSON:', error));
+
+    // Auto-fill form fields and update map when a land is selected
+    document.getElementById('landName').addEventListener('change', function() {
+      const landSelect = document.getElementById('landName');
+      const priceSelect = document.getElementById('pricePerMeter');
+      const areaSelect = document.getElementById('area');
+      const selectedLand = jsonData.find(f => f.properties['اسم_ا'] === this.value);
+
+      // Clear previous options
+      priceSelect.innerHTML = '<option value="">اختر السعر</option>';
+      areaSelect.innerHTML = '<option value="">اختر المساحة</option>';
+
+      // Remove existing marker
+      if (currentMarker) {
+        map.removeLayer(currentMarker);
+        currentMarker = null;
+      }
+
+      if (selectedLand) {
+        const props = selectedLand.properties;
+        const price = parseFloat(props['سعر_ا'] || 0).toFixed(2);
+        const area = parseFloat(props['مساحة'] || 0).toFixed(2);
+
+        // Add single option for price and select it
+        const priceOption = document.createElement('option');
+        priceOption.value = price;
+        priceOption.textContent = price;
+        priceOption.selected = true;
+        priceSelect.appendChild(priceOption);
+
+        // Add single option for area and select it
+        const areaOption = document.createElement('option');
+        areaOption.value = area;
+        areaOption.textContent = area;
+        areaOption.selected = true;
+        areaSelect.appendChild(areaOption);
+
+        // Auto-fill investmentType
+        document.getElementById('investmentType').value = typeMapping[props['الأنش']] || 'استثماري';
+
+        // Update map to show selected land
+        if (selectedLand.geometry && selectedLand.geometry.type === 'Point' && selectedLand.geometry.coordinates) {
+          const [lon, lat] = selectedLand.geometry.coordinates;
+          map.setView([lat, lon], 15);
+          currentMarker = L.marker([lat, lon]).addTo(map)
+            .bindPopup(`<b>${props['اسم_ا'] || 'أرض بدون اسم'}</b>`);
+        } else {
+          // Fallback to default view if no valid coordinates
+          map.setView([30.0444, 31.2357], 6);
+        }
+      } else {
+        document.getElementById('investmentType').value = '';
+        // Reset map to default view
+        map.setView([30.0444, 31.2357], 6);
+      }
+    });
+
+    // Calculate annual return percentage
+    function calculateAnnualReturnPercent(investmentType, developmentCostPerSqm) {
+      let baseReturn;
+      switch (investmentType) {
+        case 'زراعي': baseReturn = 8; break;
+        case 'تعليمي': baseReturn = 10; break;
+        case 'مساكن': baseReturn = 12; break;
+        case 'استثماري': baseReturn = 15; break;
+        default: baseReturn = 8;
+      }
+      const extraReturn = developmentCostPerSqm * 0.05;
+      return Math.min(baseReturn + extraReturn, 30);
+    }
+
+    // Calculate expected sell price
+    function calculateExpectedSellPrice(pricePerMeter, developmentCostPerSqm, annualReturnPercent, investmentDuration) {
+      const basePrice = pricePerMeter + developmentCostPerSqm;
+      const profitFactor = (annualReturnPercent / 100) * investmentDuration;
+      return basePrice * (1 + profitFactor);
+    }
+
+    // Add new land
+    function addLand(e) {
+      e.preventDefault();
+      const landName = document.getElementById('landName').value.trim();
+      const pricePerMeter = parseFloat(document.getElementById('pricePerMeter').value);
+      const area = parseFloat(document.getElementById('area').value);
+      const investmentType = document.getElementById('investmentType').value;
+      const developmentCostPerSqm = parseFloat(document.getElementById('developmentCostPerSqm').value);
+      const investmentDuration = parseInt(document.getElementById('investmentDuration').value);
+
+      if (!landName || pricePerMeter <= 0 || area <= 0 || !investmentType || developmentCostPerSqm < 0 || investmentDuration < 1) {
+        alert("من فضلك تأكد من إدخال جميع البيانات بشكل صحيح.");
+        return;
+      }
+
+      const annualReturnPercent = calculateAnnualReturnPercent(investmentType, developmentCostPerSqm);
+      const expectedSellPrice = calculateExpectedSellPrice(pricePerMeter, developmentCostPerSqm, annualReturnPercent, investmentDuration);
+      const landCost = pricePerMeter * area;
+      const developmentCost = developmentCostPerSqm * area;
+      const totalInvestment = landCost + developmentCost;
+      const totalReturn = totalInvestment * (annualReturnPercent / 100) * investmentDuration;
+      const ROI = (totalReturn / totalInvestment) * 100;
+      const paybackYears = totalInvestment / (totalInvestment * (annualReturnPercent / 100));
+
+      lands.push({
+        landName, pricePerMeter, area, investmentType,
+        developmentCostPerSqm, developmentCost,
+        investmentDuration, annualReturnPercent,
+        expectedSellPrice, landCost,
+        totalInvestment, totalReturn, ROI, paybackYears
+      });
+
+      document.getElementById('addLandForm').reset();
+      displayLands();
+    }
+
+    // Display lands in table
+    function displayLands() {
+  const section = document.getElementById('landsSection');
+  const tbodyContainer = document.getElementById('landsTableBody');
+
+  if (lands.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+
+  // دالة تنسيق الأرقام
+  function formatNumber(num) {
+    if (num >= 1_000_000) {
+      return (num / 1_000_000).toFixed(2) + 'M';
+    } else if (num >= 1_000) {
+      return (num / 1_000).toFixed(2) + 'K';
+    } else {
+      return num.toFixed(2);
+    }
+  }
+
+  let tbody = '';
+  lands.forEach(land => {
+    tbody += `
+      <tr>
+        <td>${land.landName}</td>
+        <td>${formatNumber(land.pricePerMeter)}</td>
+        <td>${formatNumber(land.area)}</td>
+        <td>${land.investmentType}</td>
+        <td>${formatNumber(land.developmentCost)}</td>
+        <td>${land.investmentDuration}</td>
+        <td>${land.annualReturnPercent.toFixed(2)}%</td>
+        <td>${formatNumber(land.totalReturn)}</td>
+        <td>${formatNumber(land.ROI)}</td>
+        <td>${formatNumber(land.paybackYears)}</td>
+        <td>${formatNumber(land.expectedSellPrice * land.area)}</td>
+      </tr>
+    `;
+  });
+
+  tbodyContainer.innerHTML = tbody;
+}
+
+    // Generate text report
+    function generateReport() {
+      if (lands.length === 0) {
+        alert("لا توجد أراضٍ لإظهار تقرير.");
+        return;
+      }
+      let report = "تقرير الأراضي:\n\n";
+      lands.forEach((land, idx) => {
+        report += `الأرض: ${land.landName}\n`;
+        report += `نوع الاستثمار: ${land.investmentType}\n`;
+        report += `المساحة: ${land.area} متر مربع\n`;
+        report += `سعر المتر: ${land.pricePerMeter} جنيه\n`;
+        report += `تكلفة التطوير: ${land.developmentCost.toFixed(2)} جنيه\n`;
+        report += `مدة الاستثمار: ${land.investmentDuration} سنة\n`;
+        report += `نسبة العائد السنوي: ${land.annualReturnPercent.toFixed(2)}%\n`;
+        report += `العائد الكلي: ${land.totalReturn.toFixed(2)} جنيه\n`;
+        report += `نسبة العائد على الاستثمار (ROI): ${land.ROI.toFixed(2)}%\n`;
+        report += `مدة استرداد رأس المال: ${land.paybackYears.toFixed(2)} سنة\n`;
+        report += `سعر البيع المتوقع الكلي: ${(land.expectedSellPrice * land.area).toFixed(2)} جنيه\n`;
+        report += "--------------------------\n";
+      });
+      document.getElementById("reportArea").textContent = report;
+    }
+
+    // Download report as PDF with Arabic support
+    function downloadReportPDF() {
+      if (lands.length === 0) {
+        alert("لا توجد أراضٍ لتحميل تقرير.");
+        return;
+      }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "pt",
+        format: "a4"
+      });
+
+      // Fetch and add Amiri font
+      fetch('https://cdn.jsdelivr.net/npm/@fontsource/amiri@5.0.0/files/amiri-arabic-400-normal.ttf')
+        .then(response => response.arrayBuffer())
+        .then(fontData => {
+          const fontBytes = new Uint8Array(fontData);
+          doc.addFileToVFS('Amiri-Regular.ttf', fontBytes);
+          doc.addFont('Amiri-Regular.ttf', 'Amiri', 'normal');
+          doc.setFont('Amiri');
+
+          // Set up PDF
+          let y = 40;
+          doc.setFontSize(18);
+          doc.text("تقرير الأراضي", 550, y, { align: "right" });
+          y += 30;
+          doc.setFontSize(12);
+
+          lands.forEach((land, idx) => {
+            if (y > 750) {
+              doc.addPage();
+              y = 40;
+            }
+            doc.text(`الأرض: ${land.landName}`, 550, y, { align: "right" });
+            y += 18;
+            doc.text(`نوع الاستثمار: ${land.investmentType}`, 550, y, { align: "right" });
+            y += 18;
+            doc.text(`المساحة: ${land.area} متر مربع`, 550, y, { align: "right" });
+            y += 18;
+            doc.text(`سعر المتر: ${land.pricePerMeter} جنيه`, 550, y, { align: "right" });
+            y += 18;
+            doc.text(`تكلفة التطوير: ${land.developmentCost.toFixed(2)} جنيه`, 550, y, { align: "right" });
+            y += 18;
+            doc.text(`مدة الاستثمار: ${land.investmentDuration} سنة`, 550, y, { align: "right" });
+            y += 18;
+            doc.text(`نسبة العائد السنوي: ${land.annualReturnPercent.toFixed(2)}%`, 550, y, { align: "right" });
+            y += 18;
+            doc.text(`العائد الكلي: ${land.totalReturn.toFixed(2)} جنيه`, 550, y, { align: "right" });
+            y += 18;
+            doc.text(`نسبة العائد على الاستثمار (ROI): ${land.ROI.toFixed(2)}%`, 550, y, { align: "right" });
+            y += 18;
+            doc.text(`مدة استرداد رأس المال: ${land.paybackYears.toFixed(2)} سنة`, 550, y, { align: "right" });
+            y += 18;
+            doc.text(`سعر البيع المتوقع الكلي: ${(land.expectedSellPrice * land.area).toFixed(2)} جنيه`, 550, y, { align: "right" });
+            y += 30;
+            doc.setDrawColor(0);
+            doc.line(40, y - 10, 550, y - 10);
+          });
+
+          doc.save("تقرير_الأراضي.pdf");
+        })
+        .catch(error => {
+          console.error('Error loading Amiri font:', error);
+          alert("فشل تحميل الخط العربي. سيتم إنشاء PDF بدون دعم كامل للغة العربية.");
+          // Fallback to default font
+          let y = 40;
+          doc.setFont("Helvetica", "normal");
+          doc.setFontSize(18);
+          doc.text("تقرير الأراضي", 210, y, { align: "center" });
+          y += 30;
+          doc.setFontSize(12);
+
+          lands.forEach((land, idx) => {
+            if (y > 750) {
+              doc.addPage();
+              y = 40;
+            }
+            doc.text(`الأرض: ${land.landName}`, 40, y);
+            y += 18;
+            doc.text(`نوع الاستثمار: ${land.investmentType}`, 40, y);
+            y += 18;
+            doc.text(`المساحة: ${land.area} متر مربع`, 40, y);
+            y += 18;
+            doc.text(`سعر المتر: ${land.pricePerMeter} جنيه`, 40, y);
+            y += 18;
+            doc.text(`تكلفة التطوير: ${land.developmentCost.toFixed(2)} جنيه`, 40, y);
+            y += 18;
+            doc.text(`مدة الاستثمار: ${land.investmentDuration} سنة`, 40, y);
+            y += 18;
+            doc.text(`نسبة العائد السنوي: ${land.annualReturnPercent.toFixed(2)}%`, 40, y);
+            y += 18;
+            doc.text(`العائد الكلي: ${land.totalReturn.toFixed(2)} جنيه`, 40, y);
+            y += 18;
+            doc.text(`نسبة العائد على الاستثمار (ROI): ${land.ROI.toFixed(2)}%`, 40, y);
+            y += 18;
+            doc.text(`مدة استرداد رأس المال: ${land.paybackYears.toFixed(2)} سنة`, 40, y);
+            y += 18;
+            doc.text(`سعر البيع المتوقع الكلي: ${(land.expectedSellPrice * land.area).toFixed(2)} جنيه`, 40, y);
+            y += 30;
+            doc.setDrawColor(0);
+            doc.line(40, y - 10, 550, y - 10);
+          });
+
+          doc.save("تقرير_الأراضي.pdf");
+        });
+    }
+
+    // Add form submit event
+    document.getElementById("addLandForm").addEventListener("submit", addLand);
+
+    // Initialize map on load
+    window.onload = initMap;
+  </script>
+</body>
+</html>

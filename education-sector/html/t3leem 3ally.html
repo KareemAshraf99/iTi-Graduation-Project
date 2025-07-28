@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>التعليم العالي - بوابة القليوبية التعليمية</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../style/vars.css" />
+    <link rel="stylesheet" href="../../style/main.css" />
+    <link rel="stylesheet" href="../../style/common-elements.css" />
+    <link rel="stylesheet" href="../../style/accessibility.css" />
+
+    <link rel="icon" href="../../assets/ico.png" type="image/png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Indie+Flower&family=Lalezar&family=Qahiri&family=UoqMunThenKhung&family=Quicksand:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        background-color: #fdfdfd;
+        font-family: "Cairo", sans-serif;
+      }
+      .hero-section {
+        background: linear-gradient(to left, #6f42c1, #6610f2);
+        color: white;
+        padding: 60px 20px;
+        text-align: center;
+        border-radius: 0 0 50px 50px;
+      }
+      .section-title {
+        border-right: 5px solid #6610f2;
+        padding-right: 10px;
+        font-weight: bold;
+      }
+      .card:hover {
+        transform: scale(1.02);
+        transition: 0.3s;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- مقدمة -->
+    <section id="ta3leem_3ally" class="hero-section">
+      <div class="container">
+        <h1 class="display-5">التعليم العالي بمحافظة القليوبية</h1>
+        <p class="lead mt-3">
+          كل ما يخص الجامعات والمعاهد والخدمات الجامعية والبحثية داخل المحافظة.
+        </p>
+        <a href="indexs.html" class="btn btn-light">الرجوع إلى الرئيسية</a>
+      </div>
+    </section>
+
+    <!-- دليل الكليات والمعاهد -->
+    <section class="container my-5">
+      <h2 class="section-title mb-4">دليل الكليات والمعاهد</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card p-3">
+            <h5>جامعة بنها</h5>
+            <p>تعرف على كليات جامعة بنها والتخصصات المتاحة ووسائل التواصل.</p>
+            <a href="https://bu.edu.eg/" class="btn btn-outline-primary"
+              >تفاصيل لمزيد
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-3">
+            <h5>المعاهد العليا</h5>
+            <p>قائمة بالمعاهد الفنية والخاصة المعتمدة داخل المحافظة.</p>
+            <a
+              href="https://experience.arcgis.com/experience/541ea6f8faee407398d0759dd1c8ec38"
+              class="btn btn-outline-primary"
+              >عرض المعاهد</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- خدمات التنسيق والمنح -->
+    <section class="container my-5">
+      <h2 class="section-title mb-4">خدمات التنسيق والمنح</h2>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card p-3">
+            <h5>التنسيق الإلكتروني</h5>
+            <p>دليل شامل للتقديم والتنسيق الإلكتروني للجامعات والمعاهد.</p>
+            <a
+              href="https://www.arcgis.com/apps/dashboards/7abf74d61c574224bcd2fa26f1f962b2"
+              class="btn btn-success"
+              >دخول بوابة التنسيق</a
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card p-3">
+            <h5>المنح والبعثات</h5>
+            <p>تعرف على أهم المنح الدراسية المتاحة داخليًا وخارجيًا.</p>
+            <a
+              href="https://mohesr.gov.eg/ar-eg/Pages/scholarships.aspx"
+              target="_blank"
+              class="btn btn-success"
+              >عرض المنح</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- الأسئلة الشائعة -->
+    <section class="container my-5">
+      <h2 class="section-title mb-4">الأسئلة الشائعة</h2>
+      <div class="accordion" id="faq">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#faq1"
+            >
+              كيف أقدم على التنسيق الإلكتروني؟
+            </button>
+          </h2>
+        </div>
+      </div>
+    </section>
+    <script src="../../script/languages.js"></script>
+    <script src="../../script/theme.js"></script>
+    <script src="../../script/accessibility.js"></script>
+    <script src="../../script/commonElements.js"></script>
+    <script src="../../script/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        loadNavbar("../../");
+        loadFooter("../../");
+      });
+    </script>
+  </body>
+</html>

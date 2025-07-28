@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>القطاع الحكومي - محافظة القليوبية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      direction: rtl;
+    }
+    header {
+      background: linear-gradient(to left, #1f2020, #c56307);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .dashboard {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .card h3 {
+      margin-bottom: 0.5rem;
+      color: #74340a;
+    }
+    .card p {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .back {
+      display: block;
+      text-align: center;
+      margin: 2rem 0;
+      color: #b83b15;
+      text-decoration: none;
+    }
+    .back:hover {
+      text-decoration: underline;
+    }
+    #map {
+      height: 500px;
+      margin: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    #filter-container {
+      margin: 1rem 2rem;
+      text-align: right;
+    }
+    #service-filter {
+      padding: 0.5rem;
+      font-family: 'Cairo', sans-serif;
+    }
+    #find-nearest {
+      padding: 0.5rem 1rem;
+      background: #c56307;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      margin-right: 10px; /* Added spacing */
+    }
+    #find-nearest:hover {
+      background: #74340a;
+    }
+    .legend {
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      line-height: 1.5;
+    }
+    .legend i {
+      width: 18px;
+      height: 18px;
+      float: right;
+      margin-left: 8px;
+      opacity: 0.7;
+      border-radius: 50%; /* Make markers round in legend */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>القطاع الحكومي</h1>
+    <p>عرض لأهم مؤشرات وفرص الاستثمار في القطاع الحكومي بمحافظة القليوبية</p>
+  </header>
+
+  <section class="dashboard">
+    <div class="card">
+      <h3>عدد المباني الحكومية</h3>
+      <p>40 مبنى</p>
+    </div>
+    <div class="card">
+      <h3>المواقع المستهدفة</h3>
+      <p>بنها، شبرا الخيمة</p>
+    </div>
+    <div class="card">
+      <h3>الاحتياجات الحالية</h3>
+      <p>مقار خدمات، تطوير إداري</p>
+    </div>
+    <div class="card">
+      <h3>فرص الاستثمار</h3>
+      <p>مراكز خدمات حكومية، مباني ذكية</p>
+    </div>
+  </section>
+
+  <div id="filter-container">
+    <label for="service-filter">اختر الخدمة: </label>
+    <select id="service-filter">
+      <option value="all">جميع الخدمات</option>
+      </select>
+    <button id="find-nearest">العثور على أقرب خدمة</button>
+  </div>
+
+  <div id="map"></div>
+
+  <a href="Home.html" class="back">⟵ الرجوع إلى الصفحة الرئيسية</a>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+  <script>
+    // Initialize the map
+    const map = L.map('map').setView([30.4667, 31.1833], 12); // Centered on Qalyubia, Benha
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // --- GeoJSON Data for Services ---
+    // This is where you would load your actual GeoJSON files.
+    // For this example, I'm creating a comprehensive servicesData object.
+    const servicesData = {
+      "type": "FeatureCollection",
+      "features": [
+        // Government Agencies
+        {
+          "type": "Feature",
+          "properties": { "type_en": "government_agency", "type_ar": "وكالات حكومية", "name": "مبنى محافظة القليوبية" },
+          "geometry": { "type": "Point", "coordinates": [31.185, 30.465] }
+        },
+        {
+          "type": "Feature",
+          "properties": { "type_en": "government_agency", "type_ar": "وكالات حكومية", "name": "مديرية الأمن" },
+          "geometry": { "type": "Point", "coordinates": [31.178, 30.470] }
+        },
+        // Nursing Homes
+        {
+          "type": "Feature",
+          "properties": { "type_en": "nursing_home", "type_ar": "دور رعاية المسنين", "name": "دار رعاية الأمل" },
+          "geometry": { "type": "Point", "coordinates": [31.190, 30.460] }
+        },
+        {
+          "type": "Feature",
+          "properties": { "type_en": "nursing_home", "type_ar": "دور رعاية المسنين", "name": "دار رعاية السلام" },
+          "geometry": { "type": "Point", "coordinates": [31.170, 30.480] }
+        },
+        // Police Stations
+        {
+          "type": "Feature",
+          "properties": { "type_en": "police_station", "type_ar": "أقسام الشرطة", "name": "قسم شرطة بنها" },
+          "geometry": { "type": "Point", "coordinates": [31.182, 30.468] }
+        },
+        {
+          "type": "Feature",
+          "properties": { "type_en": "police_station", "type_ar": "أقسام الشرطة", "name": "قسم شرطة شبرا الخيمة" },
+          "geometry": { "type": "Point", "coordinates": [31.230, 30.120] }
+        },
+        // Real Estate Registry
+        {
+          "type": "Feature",
+          "properties": { "type_en": "real_estate_registry", "type_ar": "السجل العقاري", "name": "مكتب الشهر العقاري ببنها" },
+          "geometry": { "type": "Point", "coordinates": [31.175, 30.475] }
+        },
+        // Transportation
+        {
+          "type": "Feature",
+          "properties": { "type_en": "transportation", "type_ar": "مرافق النقل", "name": "محطة قطار بنها" },
+          "geometry": { "type": "Point", "coordinates": [31.183, 30.463] }
+        },
+        {
+          "type": "Feature",
+          "properties": { "type_en": "transportation", "type_ar": "مرافق النقل", "name": "موقف بنها الجديد" },
+          "geometry": { "type": "Point", "coordinates": [31.195, 30.455] }
+        },
+      ]
+    };
+
+    // --- GeoJSON Data for Centers (e.g., administrative centers/polygons) ---
+    // This data represents the "centrals" you mentioned, likely as polygons.
+    const centersData = {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": { "name_ar": "مركز بنها", "services_en": ["government_agency", "nursing_home", "police_station", "real_estate_registry", "transportation"] },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[31.170, 30.450], [31.200, 30.450], [31.200, 30.480], [31.170, 30.480], [31.170, 30.450]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name_ar": "مركز شبرا الخيمة", "services_en": ["government_agency", "police_station", "transportation"] },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[31.200, 30.100], [31.250, 30.100], [31.250, 30.150], [31.200, 30.150], [31.200, 30.100]]]
+          }
+        }
+      ]
+    };
+
+    // --- Layer Styles and Mappings ---
+    // Map English type names to Arabic for display and assign colors
+    const layerStyleMap = {
+      "government_agency": { name_ar: "وكالات حكومية", color: '#ff0000', radius: 8 },
+      "nursing_home": { name_ar: "دور رعاية المسنين", color: '#00cc00', radius: 8 },
+      "police_station": { name_ar: "أقسام الشرطة", color: '#0000ff', radius: 8 },
+      "real_estate_registry": { name_ar: "السجل العقاري", color: '#ffcc00', radius: 8 },
+      "transportation": { name_ar: "مرافق النقل", color: '#9933ff', radius: 8 },
+      // Style for "centrals" polygon layer
+      "centrals_polygon": { name_ar: "المراكز الإدارية", color: '#808080', weight: 2, fillOpacity: 0.2, fillColor: '#808080' }
+    };
+
+    // Extract unique English types from your services data for dynamic layer creation
+    const uniqueServiceTypes = [...new Set(servicesData.features.map(f => f.properties.type_en))];
+
+    // Create layer groups for each service type
+    const serviceLayers = {};
+    uniqueServiceTypes.forEach(type_en => {
+      serviceLayers[type_en] = L.geoJSON(servicesData, {
+        filter: feature => feature.properties.type_en === type_en,
+        pointToLayer: (feature, latlng) => {
+          const style = layerStyleMap[type_en];
+          return L.circleMarker(latlng, {
+            radius: style?.radius || 6,
+            fillColor: style?.color || '#3388ff',
+            color: '#000',
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+          });
+        },
+        onEachFeature: (feature, layer) => {
+          layer.bindPopup(feature.properties.name || 'غير معروف');
+        }
+      });
+    });
+
+    // Create the "Centrals" polygon layer
+    const centersPolygonLayer = L.geoJSON(centersData, {
+      style: (feature) => {
+        return {
+          color: layerStyleMap.centrals_polygon.color,
+          weight: layerStyleMap.centrals_polygon.weight,
+          fillOpacity: layerStyleMap.centrals_polygon.fillOpacity,
+          fillColor: layerStyleMap.centrals_polygon.fillColor
+        };
+      },
+      onEachFeature: (feature, layer) => {
+        layer.bindPopup(feature.properties.name_ar || 'مركز غير معروف');
+      }
+    });
+
+    // --- Layer Control Setup ---
+    const overlayLayers = {};
+    uniqueServiceTypes.forEach(type_en => {
+      overlayLayers[layerStyleMap[type_en].name_ar] = serviceLayers[type_en];
+    });
+    overlayLayers[layerStyleMap.centrals_polygon.name_ar] = centersPolygonLayer; // Add centrals layer
+
+    L.control.layers(null, overlayLayers, { collapsed: false }).addTo(map);
+
+    // Add all service layers and the centrals layer to map by default
+    Object.values(serviceLayers).forEach(layer => layer.addTo(map));
+    centersPolygonLayer.addTo(map);
+
+    // --- Legend ---
+    const legend = L.control({ position: 'bottomright' });
+    legend.onAdd = function (map) {
+      const div = L.DomUtil.create('div', 'legend');
+      div.innerHTML = '<h4>الرموز</h4>';
+      uniqueServiceTypes.forEach(type_en => {
+        const style = layerStyleMap[type_en];
+        div.innerHTML += `<i style="background:${style?.color}"></i> ${style?.name_ar}<br>`;
+      });
+      // Add centrals to legend
+      const centralsStyle = layerStyleMap.centrals_polygon;
+      div.innerHTML += `<i style="background:${centralsStyle.fillColor}; opacity:${centralsStyle.fillOpacity}; border: 1px solid ${centralsStyle.color};"></i> ${centralsStyle.name_ar}<br>`;
+      return div;
+    };
+    legend.addTo(map);
+
+    // --- Populate Filter Dropdown ---
+    const serviceFilter = document.getElementById('service-filter');
+    uniqueServiceTypes.forEach(type_en => {
+      const option = document.createElement('option');
+      option.value = type_en;
+      option.textContent = layerStyleMap[type_en].name_ar; // Display Arabic name
+      serviceFilter.appendChild(option);
+    });
+
+    // --- Filter Functionality ---
+    serviceFilter.addEventListener('change', function () {
+      const selectedService = this.value;
+
+      // Clear all service layers from the map
+      Object.values(serviceLayers).forEach(layer => map.removeLayer(layer));
+      // Always keep the centrals layer, or remove if specific service is selected
+      map.removeLayer(centersPolygonLayer);
+
+
+      if (selectedService === 'all') {
+        Object.values(serviceLayers).forEach(layer => layer.addTo(map));
+        centersPolygonLayer.addTo(map); // Show all centers when "all services" is selected
+      } else {
+        serviceLayers[selectedService].addTo(map);
+        // Filter centers containing the selected service
+        const filteredCenters = {
+          type: 'FeatureCollection',
+          features: centersData.features.filter(center =>
+            center.properties.services_en.includes(selectedService)
+          )
+        };
+        const filteredCentersLayer = L.geoJSON(filteredCenters, {
+          style: (feature) => {
+            return {
+              color: layerStyleMap.centrals_polygon.color,
+              weight: layerStyleMap.centrals_polygon.weight,
+              fillOpacity: layerStyleMap.centrals_polygon.fillOpacity,
+              fillColor: layerStyleMap.centrals_polygon.fillColor
+            };
+          },
+          onEachFeature: (feature, layer) => {
+            layer.bindPopup(feature.properties.name_ar || 'مركز غير معروف');
+          }
+        }).addTo(map);
+      }
+    });
+
+    // --- Find Nearest Service ---
+    document.getElementById('find-nearest').addEventListener('click', function () {
+      if (!navigator.geolocation) {
+        alert('الموقع الجغرافي غير مدعوم في متصفحك');
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(position => {
+        const userLocation = [position.coords.longitude, position.coords.latitude];
+        const userMarker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map).bindPopup('موقعك الحالي').openPopup();
+        map.setView([position.coords.latitude, position.coords.longitude], 14);
+
+        const selectedService = serviceFilter.value;
+        let closestFeature = null;
+        let minDistance = Infinity;
+
+        const featuresToSearch = selectedService === 'all'
+          ? servicesData.features
+          : servicesData.features.filter(f => f.properties.type_en === selectedService);
+
+        if (featuresToSearch.length === 0) {
+          alert('لا توجد خدمات متاحة لهذا النوع أو لم يتم العثور على موقعك.');
+          return;
+        }
+
+        featuresToSearch.forEach(feature => {
+          const coords = feature.geometry.coordinates; // [longitude, latitude]
+          const distance = turf.distance(
+            turf.point(userLocation),
+            turf.point(coords),
+            { units: 'kilometers' }
+          );
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestFeature = feature;
+          }
+        });
+
+        if (closestFeature) {
+          const closestCoords = [closestFeature.geometry.coordinates[1], closestFeature.geometry.coordinates[0]]; // [latitude, longitude]
+          L.marker(closestCoords)
+            .addTo(map)
+            .bindPopup(`أقرب خدمة: ${closestFeature.properties.name} (${minDistance.toFixed(2)} كم)`)
+            .openPopup();
+          map.setView(closestCoords, 14);
+        } else {
+          alert('لم يتم العثور على خدمات للنوع المحدد بالقرب منك.');
+        }
+      }, () => {
+        alert('تعذر الوصول إلى موقعك');
+      });
+    });
+  </script>
+</body>
+</html>

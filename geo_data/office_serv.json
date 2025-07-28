@@ -1,0 +1,200 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 0,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.487607100000048, 30.267566500000044]
+      },
+      "properties": {
+        "FID": 0,
+        "name": "مأمورية الشهر العقاري بالعبور",
+        "Snippet": "7F9Q+22X, Obour, Al-Qalyubia Governorate 6362233, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "9 AM - 6 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.360634000000061, 30.222751200000062]
+      },
+      "properties": {
+        "FID": 1,
+        "name": "مأمورية الشهر العقاري بالخانكة",
+        "Snippet": "69F6+37R, Al Shahr Al Akari, Madinet Al Khankah, Al Khankah, Al-Qalyubia Governorate 6351210, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "9 AM - 9 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 2,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.142885800000045, 30.188797900000054]
+      },
+      "properties": {
+        "FID": 2,
+        "name": "مكتب توثيق القناطر الخيرية",
+        "Snippet": "Al Akhmiyyin, El Qanater El Khayreya, Al-Qalyubia Governorate 6404023, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "9 AM - 4 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 3,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.138298700000064, 30.194178000000079]
+      },
+      "properties": {
+        "FID": 3,
+        "name": "مأمورية الشهر العقاري بالقناطر الخيرية",
+        "Snippet": "54VQ+M8F, Madinet Al Qanater Al Khayreyah, El Qanater El Khayreya, Al-Qalyubia Governorate 6404138, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "10 AM - 9 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 4,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.204004000000054, 30.353499000000056]
+      },
+      "properties": {
+        "FID": 4,
+        "name": "مامورية الشهر العقاري بطوخ",
+        "Snippet": "Toukh City, Toukh, Al-Qalyubia Governorate 6440552, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "10 AM - 4 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 5,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.255062200000054, 30.551193700000056]
+      },
+      "properties": {
+        "FID": 5,
+        "name": "مأمورية الشهر العقارى - كفر شكر",
+        "Snippet": "Madinet Kafr Shokr, Kafr Shukr, Al-Qalyubia Governorate 6490314, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "9 AM - 8 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 6,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.274081300000034, 30.552583800000036]
+      },
+      "properties": {
+        "FID": 6,
+        "name": "مكتب توثيق كفر شكر",
+        "Snippet": "., Tasfa, Kafr Shukr, Al-Qalyubia Governorate 6496202, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "10 AM - 7 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 7,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.206458700000042, 30.353676200000052]
+      },
+      "properties": {
+        "FID": 7,
+        "name": "مامورية الشهر العقاري بطوخ",
+        "Snippet": "Toukh City, Toukh, Al-Qalyubia Governorate 6441101, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "10 AM - 10 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 8,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.216185000000053, 30.180852800000025]
+      },
+      "properties": {
+        "FID": 8,
+        "name": "مأمورية الشهر العقاري بقليوب",
+        "Snippet": "Madinet Qelyoub, Qalyub, Al-Qalyubia Governorate 6320850, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "10 AM - 7 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 9,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.267214200000069, 30.136625400000071]
+      },
+      "properties": {
+        "FID": 9,
+        "name": "مأمورية الشهر العقاري بشبرا الخيمة",
+        "Snippet": "Bahtim, Shubra El Kheima 2, Al-Qalyubia Governorate 6223003, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "10 AM - 7 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.182325300000059, 30.459110400000043]
+      },
+      "properties": {
+        "FID": 10,
+        "name": "مكتب توثيق بنها",
+        "Snippet": "F55J+MVV، الشهيد فريد ندا, Qism Banha, Banha, Al-Qalyubia Governorate 6460350, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "9 AM - 8 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 11,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.181225600000062, 30.475493800000038]
+      },
+      "properties": {
+        "FID": 11,
+        "name": "مكتب السجل العيني ببنها",
+        "Snippet": "عمارات طراد النيل, Teraad Al Nil, Qism Banha, Banha 2, Al-Qalyubia Governorate 6470130, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "9 AM - 9 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 12,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.189223100000049, 30.469687900000054]
+      },
+      "properties": {
+        "FID": 12,
+        "name": "مكتب الشهر العقاري والتوثيق ببنها",
+        "Snippet": "F59Q+VMQ, El-Shaheed Farid Nada, Qism Banha, Banha 2, Al-Qalyubia Governorate 6470201, Egypt",
+        "working_ho": " ",
+        "WorkingHo": "10 AM - 6 PM"
+      }
+    }
+  ]
+}

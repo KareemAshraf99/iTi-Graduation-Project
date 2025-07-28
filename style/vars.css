@@ -1,0 +1,826 @@
+:root {
+  /* Section bg color */
+  --section-bg-color-1: white;
+  --section-bg-color-2: #f3f4f6;
+
+  /* Section Title Color */
+  --section-title-color-1: #1e40af;
+  --section-title-color-2: #39c5fd;
+
+  /* progress bar*/
+  --progress-indector-bg-color: rgba(255, 255, 255, 0.2);
+  --progress-indector-color-1: #3b82f6;
+  --progress-indector-color-2: #1e40af;
+
+  /* hero section */
+  --hero-background-gradient-1: rgba(77, 154, 230, 0.459) 10%;
+  --hero-background-gradient-2: rgba(47, 103, 159, 0.459) 40%;
+  --hero-background-gradient-3: rgb(79, 154, 224) 100%;
+  --hero-background-color-1: rgb(30, 64, 174) 0%;
+  --hero-background-color-2: rgb(30, 59, 138) 50%;
+  --hero-background-color-3: rgba(0, 0, 3, 0.969) 100%;
+  --hero-btn-text-color: #000000;
+  --hero-btn-background: #ffffff;
+  --hero-btn-background-hover: #dadada;
+  --hero-btn-border: rgba(255, 255, 255, 0.501);
+
+  --hero-sec-btn-background: #76787a3a;
+  --hero-sec-btn-background-hover: #a8a9aa90;
+  --hero-sec-btn-border: rgba(255, 255, 255, 0.501);
+  --hero-icon-text-color: #595959;
+  --hero-icon-color: #e6e6e6;
+  --hero-state-item-bg-color: rgba(224, 224, 224, 0.045);
+  --hero-state-item-bg-border: rgba(224, 224, 224, 0.892);
+  --hero-main-title-color-1: #ffffff;
+  --hero-main-title-color-2: #ffb700;
+
+  /* map continar section*/
+  --map-continar-bg-1: rgba(233, 233, 233, 0.562) 0%;
+  --map-continar-bg-2: rgba(130, 130, 130, 0.054) 100%;
+  --map-continar-border-color: rgba(163, 163, 163, 0.167);
+  --map-list-bg-1: #f9fafb 0%;
+  --map-list-bg-2: #ffffff 100%;
+  --map-info-bg-1: #1e40af;
+  --map-info-bg-2: #3b82f6;
+  --map-list-hover-color-1: #1e40af;
+  --map-list-hover-color-2: #3b82f6;
+  --map-list-active-color-1: #3b82f6;
+  --map-list-active-color-2: #597ae5;
+  --map-list-active-border-color: #1e3a8a;
+  --map-list-scroll-color-1: #3c528f;
+  --map-list-scroll-color-2: #719be0;
+  --map-list-scroll-hover-color-1: #1e3a8a;
+  --map-list-scroll-hover-color-2: #3b82f6;
+  --map-list-scroll-track-color-1: #b3b3b3;
+  --map-list-scroll-track-color-2: #ffffff;
+  --map-list-text-color: #6b7280;
+  --map-list-text-color-hover: #ffffff;
+  --map-list-icon-color: #6b7280;
+  --map-list-icon-color-hover: #ffffff;
+  /* --for-get-val: rgb(97, 175, 248); */
+  --map-fill-color: 97, 175, 248;
+  --map-fill-opacity: 0.9;
+  --map-outline-color: #000000;
+  --map-outline-width: 0.3px;
+  --selection-color: #4e7b9d78;
+  --selection-fill-opacity: 1;
+  --selection-halo-opacity: 1;
+  --selection-halo-color: #000000;
+
+  /* Project Section */
+  --date-bg-color: rgba(255, 255, 255, 0.568);
+  --date-text-color: #000000;
+
+  --card-bg-color: #ffffff;
+  --card-title-color: #3d3d3d;
+  --card-title-hover-color: #000000;
+  --card-p-color: rgb(70, 70, 70);
+  --card-link-color: #1e40af;
+  --card-link-hover-color: #1e3a8a;
+
+  /* Service Section*/
+  --service-card-bg: white;
+  --service-card-border: #e5e7eb;
+  --service-card-title-color: #1f2937;
+  --service-card-title-hover-color: #1e40af;
+  --service-card-desc-color: #4b5563;
+  --service-card-icon-color-1: #1e40af;
+  --service-card-icon-color-2: #3b82f6;
+  --service-card-link-color: #1e40af;
+  --service-card-link-hover-color: #1e3a8a;
+
+  /* gov-entities page */
+
+  --directorate-title-color: #1f2937;
+  --directorate-title-hover-color: #1e40af;
+  --directorate-card-bg: #fbfbfb;
+  --directorate-border-color: #b5b5b5;
+  --directorate-border-hover-color: #777777;
+
+  /* gov-card details */
+  --overlay-bg-color: rgba(0, 0, 0, 0.8);
+  --overlay-card-bg-color: white;
+  --overlay-card-border-color: #000000;
+  --overlay-card-title-color: #1f2937;
+  --overlay-close-btn-bg: #007bff;
+  --overlay-close-btn-bg-hover: #1e3a8a;
+  --overlay-close-btn-text: #ffffff;
+  --details-bg-color: white;
+  --details-border-color: #000000;
+  --details-title-color: #1f2937;
+  --details-content-color: rgb(70, 70, 70);
+  --details-border-left-color: #1e40af;
+  --details-item-bg-color: rgba(0, 0, 0, 0.03);
+  --details-item-bg-color-hover: rgba(0, 0, 0, 0.097);
+  --details-item-label-color: #1f2937;
+  --details-item-value-color: #1f2937;
+
+  /* diagram */
+  --diagram-department-color: #ececec;
+  --diagram-department-hover-color: #c3c3c3;
+  --diagram-department-border-color: rgba(104, 104, 141, 0.471);
+  --diagram-department-txt-color: #1f2937;
+  --diagram-node-bg-color: #3b82f6;
+  --diagram-node-txt-color: #1f2937;
+  --diagram-node-shadow-color: rgba(73, 154, 247, 0.351);
+  --diagram-node-hover-shadow-color: rgba(99, 208, 251, 0.682);
+  --diagram-arrow-color: #000000;
+
+  /* governer page */
+  --loading-bg-color: white;
+  --loading-spiner-color-1: rgba(255, 255, 255, 0.3);
+  --loading-spiner-color-2: #1e40af;
+  --loading-spiner-txt-color: #4b5563;
+  --section-header-color-1: rgba(179, 179, 179, 0.562) 0%;
+  --section-header-color-2: rgba(233, 233, 233, 0.562) 0%;
+  --section-header-color-3: rgba(130, 130, 130, 0.054) 100%;
+  /* --section-header-title-color: #1f2937; */
+  --section-header-subtitle-color: rgb(0, 0, 0);
+  --search-box-bg-color: rgba(255, 255, 255, 0.95);
+  --search-input-color: #000000;
+  --search-icon-color: #3e3e3e;
+  --search-clear-hover-color: #cfcfcf;
+  --search-clear-hover-txt-color: #000000;
+  --header-icon-color: #3b82f6;
+  --accordion-item-bg: white;
+  --accordion-item-border: #e5e7eb;
+  --accordion-bg-color-1: #1e40af;
+  --accordion-bg-color-2: #3b82f6;
+  --accordion-bg-hover-color-1: #3b82f6;
+  --accordion-bg-hover-color-2: #1e40af;
+  --accordion-color: white;
+  --accordion-before-color: rgba(42, 170, 255, 0.523);
+  --accordion-icon-color: rgba(255, 255, 255, 0.962);
+  --accordion-outline-color: #1e3a8a;
+  --panel-header-bg-color: #f3f3f3;
+  --panel-header-border-bottom-color: #eaeaea5a;
+  --panel-header-h3-color: #1f2937;
+  --action-btn-bg-color: #1e40af;
+  --action-btn-bg-hover-color: #1e3a8a;
+  --action-btn-txt-color: white;
+  --pdf-frame-color: #000000;
+  --pdf-link-color: #1e40af;
+  --book-card-bg-color-1: #ffffff;
+  --book-card-bg-color-2: #f9fafb;
+  --book-card-border-color: #e5e7eb;
+  --book-card-before-color-1: #1e40af;
+  --book-card-before-color-2: #3b82f6;
+  --book-card-border-hover-color: #1e40af;
+  --book-card-icon-color-1: #1e40af;
+  --book-card-icon-color-2: #3b82f6;
+  --book-card-date-bg-color: #f3f4f6;
+  --book-card-date-txt-color: #262626;
+  --book-card-title-txt-color: #000000;
+  --book-card-desc-color: #000000;
+  --book-card-link-color: #1e40af;
+  --book-card-link-hover-color: #1e3a8a;
+  --book-card-link-after-color: #1e40af;
+  --copy-link-btn-bg-color: #f3f4f6;
+  --copy-link-btn-txt-color: #4b5563;
+  --copy-link-btn-bg-hover-color: #1e40af;
+  --copy-link-btn-txt-hover-color: white;
+  --full-btn-bg-color-1: #1e40af;
+  --full-btn-bg-color-2: #3b82f6;
+  --full-btn-text-color: #ffffff;
+  --full-btn-hover-color-1: #1e3a8a;
+  --full-btn-hover-color-2: #1e40af;
+  --btn-before-color: rgba(42, 170, 255, 0.523);
+  --btn-icon-color: rgba(255, 255, 255, 0.9);
+  --link-btn-color: white;
+  --img-model-bg-color: rgba(0, 0, 0, 0.288);
+  --img-model-colse-color: #252525;
+  --img-model-colse-hover-color: #000000;
+  --modal-btn-bg-color: #1e40af;
+  --modal-btn-hover-color: #1e3a8a;
+  --toast-bg-color: #1f2937;
+  --toast-txt-color: #ffffff;
+
+  /* Accessibility */
+  --accessibility-bg-color: #f9fafb;
+  --accessibility-header-bg-color: #f9fafb;
+  --accessibility-footer-bg-color: #f9fafb;
+  --accessibility-border-color: #898989;
+  --accessibility-title-color: #1f2937;
+  --accessibility-x-btn-color: #1f2937;
+  --accessibility-x-btn-hover-color: rgb(255, 255, 255);
+  --accessibility-x-btn-bg-hover-color: #de0e0e;
+  --accessibility-scrollbar-color-1: #396af1;
+  --accessibility-scrollbar-color-2: #ececec;
+  --accessibility-scrollbar-track: #c6c6c6;
+  --accessibility-scrollbar-thumb: #396af1;
+  --accessibility-scrollbar-thumb-hover: #396af1;
+  --accessibility-groub-bg-color: #efefef;
+  --accessibility-groub-border-color: #747474;
+  --accessibility-groub-title-color: #1f2937;
+  --accessibility-btn-bg-color: #396af1;
+  --accessibility-btn-bg-hover-color: #527df6;
+  --accessibility-btn-txt-color: #ebebeb;
+  --accessibility-btn-icon-color: #ebebeb;
+  --accessibility-btn-txt-hover-color: #ffffff;
+  --accessibility-btn-icon-hover-color: #ffffff;
+  --accessibility-btn-border-color: #e9e9e9;
+  --accessibility-btn-border-hover-color: #f2f2f2;
+  --accessibility-btn-active-bg-color: #1e3a8a;
+  --accessibility-btn-active-txt-color: #ffffff;
+  --accessibility-btn-active-border-color: #000000;
+  --accessibility-btn-active-icon-color: #ffffff;
+  --accessibility-btn-active-before: rgba(255, 255, 255, 0.187) 50%;
+  --accessibility-btn-reset-bg: rgb(176, 42, 42);
+  --accessibility-btn-reset-bg-hover: red;
+  --accessibility-btn-reset-txt: #ffffff;
+  --accessibility-btn-reset-txt-hover: #c5c5c5;
+  --accessibility-btn-reset-border: rgb(154, 154, 154);
+  --accessibility-btn-reset-border-hover: rgb(24, 24, 24);
+  --accessibility-btn-reset-icon: rgb(255, 255, 255);
+  --accessibility-btn-reset-icon-hover: #c5c5c5;
+  --accessibility-foucs-color: #ff0000;
+  --accessibility-links-highlight-color: #ff6b35;
+  --contrast-scrollbar-track-color: #f0f0f0;
+  --contrast-scrollbar-track-thumb: #666;
+  --contrast-scrollbar-track-thumb: #666;
+
+  /* Gov Servvices*/
+
+  --gov-background-color-1: rgb(69, 96, 188) 0%;
+  --gov-background-color-2: rgb(69, 97, 174) 50%;
+  --gov-background-color-3: rgba(53, 53, 126, 0.969) 100%;
+  --stat-label-gov-coloe: #f0f0f0;
+
+  /* Ai Button */
+  --ai-btn-bg-color-1: #007bff;
+  --ai-btn-bg-color-2: #143b65;
+  --ai-btn-txt-color: #ffffff;
+
+  /* routing page */
+  --summary-bg-color: white;
+  --summary-icon-color: #4f46e5;
+
+  /* Primary Colors */
+  --primary-color: #1e40af;
+  --primary-light: #3b82f6;
+  --primary-dark: #1e3a8a;
+
+  /* Secondary Colors */
+  --secondary-color: #059669;
+  --secondary-light: #10b981;
+  --secondary-dark: #047857;
+
+  /* Accent Colors */
+  --accent-color: #f59e0b;
+  --accent-light: #fbbf24;
+  --accent-dark: #d97706;
+
+  /* Neutral Colors */
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Typography */
+  --font-primary: "Cairo", sans-serif;
+  --font-display: "Lalezar", sans-serif;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+  --text-7xl: 4.5rem; /* 72px */
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+
+  /* Line heights for better readability */
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* Letter spacing */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* ------------------------------ [old] ----------------------------- */
+
+  --bg-color: #ffffff;
+  --gov_title_color: white;
+  --gov_title_hover: #d6b942;
+  --text-color: #333333;
+  --heading-color: #003366;
+  --navbar-bg: #f8f9fa;
+  --navbar-link-hover: #e2e6ea;
+  --dropdown-bg: #f9f9f9;
+  --dropdown-link-hover: #f1f1f1;
+  --news-link-hover: #c6b51b;
+
+  --button-primary-hover: #0056b3;
+  --button-text: white;
+  --section-bg: #f0f4f7;
+  --team-member-bg: #f8f9fa;
+  --team-member-hover-bg: #b3eeba51;
+  --team-avatar-border: #02d01a;
+  --input-bg: white;
+  --input-border: #ddd;
+  --tiker-box-shadow: rgba(216, 216, 216, 0.727);
+  --slider-border-color: #000000;
+
+  /* Accessibility Panel Light Mode */
+  --panel-bg: #ffffff;
+  --border-color: #e5e7eb;
+  --reset_acce_btn: red;
+  --reset_acce_btn_hover: rgb(243, 87, 87);
+  --reset_acce_btn_border: brown;
+}
+
+body[data-theme="dark"] {
+  /* Section bg color */
+  --section-bg-color-1: #000000;
+  --section-bg-color-2: #121212;
+
+  /* Section Title Color */
+  --section-title-color-1: #ababab;
+  --section-title-color-2: #b68303;
+
+  /* progress bar*/
+  --progress-indector-bg-color: rgba(255, 255, 255, 0.2);
+  --progress-indector-color-1: #ebc712;
+  --progress-indector-color-2: #b68303;
+
+  /* hero section */
+  --hero-background-gradient-1: rgba(24, 24, 24, 0.459) 10%;
+  --hero-background-gradient-2: rgba(31, 31, 31, 0.459) 40%;
+  --hero-background-gradient-3: rgb(33, 33, 33) 100%;
+  --hero-background-color-1: rgb(0, 0, 0) 0%;
+  --hero-background-color-2: rgb(0, 0, 0) 50%;
+  --hero-background-color-3: rgba(0, 0, 0, 0.969) 100%;
+  --hero-btn-text-color: #000000;
+  --hero-btn-background: #ffffff;
+  --hero-btn-background-hover: #cccccc;
+  --hero-btn-border: #b9b9b9;
+  --hero-sec-btn-background: rgba(118, 120, 122, 0.227);
+  --hero-sec-btn-border: rgba(255, 255, 255, 0.501);
+  --hero-sec-btn-background-hover: #a8a9aa90;
+  --hero-icon-color: #ffffff;
+  --hero-icon-text-color: #000000;
+  --hero-state-item-bg-color: rgba(224, 224, 224, 0.045);
+  --hero-state-item-bg-border: rgba(224, 224, 224, 0.892);
+
+  /* map continar section*/
+  --map-continar-bg-1: rgba(63, 63, 63, 0.562) 0%;
+  --map-continar-bg-2: rgba(130, 130, 130, 0.054) 100%;
+  --map-continar-border-color: rgba(14, 14, 14, 0.068);
+
+  --map-list-bg-1: #f9fafb 0%;
+  --map-list-bg-2: #ffffff 100%;
+  --map-info-bg-1: #b68303;
+  --map-info-bg-2: #ad9965;
+  --map-list-hover-color-1: #ebc712;
+  --map-list-hover-color-2: #785e06;
+  --map-list-active-color-1: #5e5421;
+  --map-list-active-color-2: #c8a01b;
+  --map-list-active-border-color: #624b04;
+  --map-list-scroll-color-1: #9c7f20;
+  --map-list-scroll-color-2: #d3c683;
+  --map-list-scroll-hover-color-1: #785e06;
+  --map-list-scroll-hover-color-2: #ebc712;
+  --map-list-scroll-track-color-1: #b3b3b3;
+  --map-list-scroll-track-color-2: #ffffff;
+  --map-list-text-color: #6b7280;
+  --map-list-text-color-hover: #ffffff;
+  --map-list-icon-color: #6b7280;
+  --map-list-icon-color-hover: #ffffff;
+
+  /* --for-get-val: rgb(210, 165, 17); */
+  --map-fill-color: 210, 165, 17;
+  --map-fill-opacity: 0.9;
+  --map-outline-color: #000000;
+  --map-outline-width: 0.3px;
+  --selection-color: #cacaca78;
+  --selection-fill-opacity: 1;
+  --selection-halo-opacity: 1;
+  --selection-halo-color: #333;
+
+  /* Project Section */
+  --date-bg-color: rgba(0, 0, 0, 0.498);
+  --date-text-color: #ffffff;
+  --card-bg-color: #2c2c2c;
+  --card-title-color: #c6c6c6;
+  --card-title-hover-color: #ededed;
+  --card-p-color: #626262;
+  --card-link-color: #b1944a;
+  --card-link-hover-color: #e0d0aa;
+
+  /* Service Section*/
+  --service-card-bg: #2c2c2c;
+  --service-card-border: #444444;
+  --service-card-title-color: #c6c6c6;
+  --service-card-title-hover-color: #ededed;
+  --service-card-desc-color: #626262;
+  --service-card-link-color: #b1944a;
+  --service-card-link-hover-color: #e0d0aa;
+  --service-card-icon-color-1: #ebc712;
+  --service-card-icon-color-2: #785e06;
+
+  /* gov-entities page */
+  --directorate-title-color: #c6c6c6;
+  --directorate-title-hover-color: #ededed;
+  --directorate-card-bg: #2c2c2c;
+  --directorate-border-color: #444444;
+  --directorate-border-hover-color: #626262;
+
+  /* gov-card details */
+  --overlay-bg-color: rgba(0, 0, 0, 0.8);
+  --overlay-card-bg-color: #2c2c2c;
+  --overlay-card-border-color: #444444;
+  --overlay-card-title-color: #c6c6c6;
+  --overlay-close-btn-bg: #957c13;
+  --overlay-close-btn-bg-hover: #be9f21;
+  --overlay-close-btn-text: #ffffff;
+  --details-bg-color: #2c2c2c;
+  --details-border-color: #444444;
+  --details-title-color: #c6c6c6;
+  --details-content-color: #ffffff;
+  --details-border-left-color: #957c13;
+  --details-item-bg-color: rgba(93, 93, 93, 0.216);
+  --details-item-bg-color-hover: rgba(177, 177, 177, 0.412);
+  --details-item-label-color: #c6c6c6;
+  --details-item-value-color: #c6c6c6;
+
+  /* diagram */
+  --diagram-node-bg-color: #957c13;
+  --diagram-node-txt-color: #2c2c2c;
+  --diagram-department-color: #2c2c2c;
+  --diagram-department-hover-color: #3a3a3a;
+  --diagram-department-border-color: #444444;
+  --diagram-department-txt-color: #c6c6c6;
+  --diagram-node-shadow-color: rgba(161, 161, 161, 0.351);
+  --diagram-node-hover-shadow-color: rgba(141, 141, 141, 0.278);
+  --diagram-arrow-color: #957c13;
+
+  /* governer page */
+  --loading-bg-color: #545454;
+  --loading-spiner-color-1: rgba(255, 255, 255, 0.3);
+  --loading-spiner-color-2: #ffffff;
+  --loading-spiner-txt-color: #4b5563;
+
+  --section-header-color-1: rgba(24, 24, 24, 0.459) 10%;
+  --section-header-color-2: rgba(31, 31, 31, 0.459) 40%;
+  --section-header-color-3: rgb(33, 33, 33) 100%;
+
+  /* --section-header-title-color: #b7b7b7; */
+  --section-header-subtitle-color: #c6c6c6;
+  --search-box-bg-color: rgba(255, 255, 255, 0.95);
+  --search-input-color: #000000;
+  --search-icon-color: #3e3e3e;
+  --search-clear-hover-color: #cfcfcf;
+  --search-clear-hover-txt-color: #000000;
+  --header-icon-color: #957c13;
+  --accordion-item-bg: #2c2c2c;
+  --accordion-item-border: #6f6f6f;
+  --accordion-bg-color-1: #785e06;
+  --accordion-bg-color-2: #bd9f0a;
+  --accordion-bg-hover-color-1: #bd9f0a;
+  --accordion-bg-hover-color-2: #785e06;
+  --accordion-before-color: rgba(180, 164, 19, 0.165);
+  --accordion-color: #c6c6c6;
+  --accordion-icon-color: rgba(255, 255, 255, 0.962);
+  --accordion-outline-color: #bd9f0a;
+  --panel-header-bg-color: #2c2c2c;
+  --panel-header-border-bottom-color: #7e7e7e;
+  --panel-header-h3-color: #c6c6c6;
+  --action-btn-bg-color: #957c13;
+  --action-btn-bg-hover-color: #bd9f0a;
+  --action-btn-txt-color: white;
+  --pdf-frame-color: #9c9c9c;
+  --pdf-link-color: #bd9f0a;
+  --book-card-bg-color-1: #444444;
+  --book-card-bg-color-2: #626262;
+  --book-card-border-color: #e5e7eb;
+  --book-card-before-color-1: #b68303;
+  --book-card-before-color-2: #ebc712;
+  --book-card-border-hover-color: rgb(96, 96, 96);
+  --book-card-icon-color-1: #b68303;
+  --book-card-icon-color-2: #ebc712;
+  --book-card-date-bg-color: #f3f4f6;
+  --book-card-date-txt-color: #262626;
+  --book-card-title-txt-color: #c6c6c6;
+  --book-card-desc-color: #c6c6c6;
+  --book-card-link-color: #c6c6c6;
+  --book-card-link-hover-color: #e0e0e0;
+  --book-card-link-after-color: #c6c6c6;
+  --copy-link-btn-bg-color: #ebc712;
+  --copy-link-btn-txt-color: white;
+  --copy-link-btn-bg-hover-color: #b68303;
+  --copy-link-btn-txt-hover-color: white;
+  --full-btn-bg-color-1: #b68303;
+  --full-btn-bg-color-2: #ebc712;
+  --full-btn-text-color: #ffffff;
+  --full-btn-hover-color-1: #b68303;
+  --full-btn-hover-color-2: #ebc712;
+  --btn-before-color: rgba(216, 223, 21, 0.523);
+  --btn-icon-color: rgba(255, 255, 255, 0.9);
+  --link-btn-color: #262626;
+  --img-model-bg-color: rgba(0, 0, 0, 0.288);
+  --img-model-colse-color: #e0e0e0;
+  --img-model-colse-hover-color: #ffffff;
+  --modal-btn-bg-color: #bd9f0a;
+  --modal-btn-hover-color: #b68303;
+  --toast-bg-color: #1f2937;
+  --toast-txt-color: #ffffff;
+
+  /* Accessibility */
+  --accessibility-bg-color: #131313;
+  --accessibility-header-bg-color: #131313;
+  --accessibility-footer-bg-color: #131313;
+
+  --accessibility-border-color: #434343;
+
+  --accessibility-title-color: #c6c6c6;
+  --accessibility-x-btn-color: #c6c6c6;
+  --accessibility-x-btn-hover-color: #ffffff;
+  --accessibility-x-btn-bg-hover-color: #646464;
+  --accessibility-scrollbar-color-1: #b68303;
+  --accessibility-scrollbar-color-2: #c6c6c6;
+  --accessibility-scrollbar-track: #c6c6c6;
+  --accessibility-scrollbar-thumb: #bd9f0a;
+  --accessibility-scrollbar-thumb-hover: #f6ba03;
+
+  --accessibility-groub-bg-color: #2c2c2c;
+  --accessibility-groub-border-color: #414141;
+  --accessibility-groub-title-color: #ffffff;
+  --accessibility-btn-bg-color: #b68303;
+  --accessibility-btn-bg-hover-color: #cf9a12;
+  --accessibility-btn-txt-color: #c6c6c6;
+  --accessibility-btn-icon-color: #c6c6c6;
+  --accessibility-btn-txt-hover-color: #ffffff;
+  --accessibility-btn-icon-hover-color: #ffffff;
+  --accessibility-btn-border-color: #2b2b2b;
+  --accessibility-btn-border-hover-color: #5d5d5d;
+
+  --accessibility-btn-active-bg-color: #c7c412;
+  --accessibility-btn-active-txt-color: #ffffff;
+  --accessibility-btn-active-border-color: #000000;
+  --accessibility-btn-active-icon-color: #ffffff;
+  --accessibility-btn-active-before: rgba(255, 255, 255, 0.187) 50%;
+  --accessibility-btn-reset-bg: rgb(176, 42, 42);
+  --accessibility-btn-reset-bg-hover: red;
+  --accessibility-btn-reset-txt: #ffffff;
+  --accessibility-btn-reset-txt-hover: #c5c5c5;
+  --accessibility-btn-reset-border: rgb(0, 0, 0);
+  --accessibility-btn-reset-border-hover: rgb(24, 24, 24);
+  --accessibility-btn-reset-icon: rgb(255, 255, 255);
+  --accessibility-btn-reset-icon-hover: #c5c5c5;
+  --accessibility-foucs-color: #ff0000;
+  --accessibility-links-highlight-color: #ff6b35;
+  --contrast-scrollbar-track-color: #f0f0f0;
+  --contrast-scrollbar-track-thumb: #666;
+  --contrast-scrollbar-track-thumb: #666;
+
+  /* Gov Servvices*/
+  --gov-background-color-1: rgb(0, 0, 0) 0%;
+  --gov-background-color-2: rgb(0, 0, 0) 50%;
+  --gov-background-color-3: rgba(0, 0, 0, 0.969) 100%;
+  --stat-label-gov-coloe: white;
+
+  /* Ai Button */
+  --ai-btn-bg-color-1: #f2f2f2;
+  --ai-btn-bg-color-2: #ededed;
+  --ai-btn-txt-color: #2d2d2d;
+
+  /* routing page */
+  --summary-bg-color: #3a3a3a;
+  --summary-icon-color: #ffffff;
+
+  /* Primary Colors */
+  --primary-color: #1e40af;
+  --primary-light: #3b82f6;
+  --primary-dark: #1e3a8a;
+
+  /* Secondary Colors */
+  --secondary-color: #059669;
+  --secondary-light: #10b981;
+  --secondary-dark: #047857;
+
+  /* Accent Colors */
+  --accent-color: #f59e0b;
+  --accent-light: #fbbf24;
+  --accent-dark: #d97706;
+
+  /* Neutral Colors */
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Typography */
+  --font-primary: "Cairo", sans-serif;
+  --font-display: "Lalezar", sans-serif;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+  --text-7xl: 4.5rem; /* 72px */
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+
+  /* ------------------------------ [old] ----------------------------- */
+
+  --bg-color: #121212;
+  --gov_title_color: white;
+  --text-color: #e0e0e0;
+  --heading-color: #90caf9;
+  --navbar-bg: #1f1f1f;
+  --navbar-link-hover: #333333;
+  --dropdown-bg: #2c2c2c;
+  --dropdown-link-hover: #3a3a3a;
+  --news-link-hover: #957c13;
+  --button-primary: #ffffff;
+  --button-primary-hover: #957c13;
+  --button-text: black;
+  --section-bg: #1e1e1e;
+  --team-member-bg: #2c2c2c;
+  --team-member-hover-bg: #6d6c6c;
+  --team-avatar-border: #4caf50;
+  --input-bg: #2c2c2c;
+  --input-border: #555;
+  --tiker-box-shadow: rgba(54, 53, 53, 0.501);
+  --slider-border-color: #ffffff;
+
+  /* Accessibility Panel Dark Mode */
+  --panel-bg: #2c2c2c;
+  --border-color: #555;
+  --reset_acce_btn: red;
+  --reset_acce_btn_hover: rgb(243, 87, 87);
+  --reset_acce_btn_border: brown;
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: var(--space-4);
+}
+
+h1 {
+  font-size: var(--text-5xl);
+  font-family: var(--font-display);
+}
+
+h2 {
+  font-size: var(--text-4xl);
+}
+
+h3 {
+  font-size: var(--text-2xl);
+}
+
+p {
+  margin-bottom: var(--space-4);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Focus Styles */
+button:focus,
+a:focus,
+input:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}

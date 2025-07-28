@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>القطاع الحكومي - محافظة القليوبية</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>القطاع الحكومي</h1>
+      <p>عرض لأهم مؤشرات وفرص الاستثمار في القطاع الحكومي بمحافظة القليوبية</p>
+    </header>
+
+    <section class="dashboard">
+      <div class="card">
+        <h3>عدد المباني الحكومية</h3>
+        <p>تحميل...</p>
+      </div>
+      <div class="card">
+        <h3>المواقع المستهدفة</h3>
+        <p>تحميل...</p>
+      </div>
+      <div class="card">
+        <h3>الاحتياجات الحالية</h3>
+        <p>تحميل...</p>
+      </div>
+      <div class="card">
+        <h3>فرص الاستثمار</h3>
+        <p>تحميل...</p>
+      </div>
+    </section>
+
+    <div id="sidebar-left">
+      <h3>الطبقات</h3>
+      <div id="layer-controls"></div>
+    </div>
+
+    <div id="sidebar-right">
+      <h3>📊إحصائيات عدد الخدمات حسب نوع الخدمة</h3>
+      <canvas id="serviceChart" width="300" height="300"></canvas>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="filter-box">
+      <label for="typeFilter">نوع الخدمة:</label>
+      <select id="typeFilter">
+        <option value="all">كل الأنواع</option>
+      </select>
+
+      <label for="cityFilter">المركز:</label>
+      <select id="cityFilter">
+        <option value="all">كل المراكز</option>
+      </select>
+
+      <button id="findNearestBtn">اعثر على أقرب خدمة</button>
+    </div>
+
+    <div id="centerChartSection">
+      <h3>📊 توزيع الخدمات حسب المراكز</h3>
+      <canvas id="centerChart"></canvas>
+    </div>
+    <section class="card" id="service-gap-card">
+      <h3>الفجوات حسب نوع الخدمة</h3>
+      <div id="service-gaps-table-container">
+        <table id="service-gaps-table">
+          <thead>
+            <tr>
+              <th>المركز</th>
+              <th>أنواع الخدمات غير الموجودة</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <a href="http://127.0.0.1:5500/homepage/Home.html" class="back"
+      >⟵ الرجوع إلى الصفحة الرئيسية</a
+    >
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+  </body>
+</html>

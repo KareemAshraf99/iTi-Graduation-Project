@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "nursing_home_fixed",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32636" } },
+"features": [
+{ "type": "Feature", "properties": { "FID": 0, "x": 31.2397, "y": 30.131593, "الاسم": "دار ضيافة ش ترعة البيجامية بجوار نقطة سور محطة المياة غرب شبرا", "WorkingHo": "9 AM - 8 PM" }, "geometry": { "type": "Point", "coordinates": [ 330434.251000000163913, 3334674.899599999189377 ] } }
+]
+}

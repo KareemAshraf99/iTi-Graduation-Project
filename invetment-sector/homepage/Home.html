@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>الاستثمار في محافظة القليوبية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="logo"> محافظة القليوبية</div>
+     <nav class="navbar">
+  <ul class="nav-links">
+    <li><button class="about-btn" onclick="toggleAbout()">من نحن</button></li>
+    <li><a href="mailto:info@qalyubia.gov.eg" class="contact-link">تواصل معنا</a></li>
+    <li><a href="http://127.0.0.1:8888">مساعد ذكي</a></li>
+    <li><a href="/ads.html">ROI</a></li>
+    <li><a href="investor_guide.pdf" target="_blank">دليل المستثمر</a></li>
+  </ul>
+</nav>
+
+    </header>
+
+<div class="hero-section">
+  <div class="hero-content">
+    <h1>استثمر في أراضي محافظة القليوبية لمستقبل واعد</h1>
+    <p>أمّن مستقبلك من خلال فرص استثمارية في التعليم والتجارة والصناعة</p>
+    <a class="cta" href="../map_jn.html">استكشف الفرص</a>
+  </div>
+
+</div>
+<section class="sectors">
+  <h2>اختر نوع الاستثمار</h2>
+  <div class="sector-buttons">
+    <a href="http://127.0.0.1:7000" class="sector-btn" target="_blank">التعليمي</a>
+    <a href="/services/services.html" class="sector-btn" target="_blank">الخدمي</a>
+    <a href="/agre/agriculture.html" class="sector-btn" target="_blank">الزراعي</a>
+    <a href="http://127.0.0.1:5000" class="sector-btn" target="_blank">الحكومي</a>
+  </div>
+</section>
+
+    
+    <div id="about-popup" class="popup-overlay">
+      <div class="popup-content">
+        <span class="close-btn" onclick="toggleAbout()">×</span>
+        <h2>من نحن</h2>
+        <p>
+        نحن فريق متخصص في دعم الاستثمار المحلي بمحافظة القليوبية، نعمل على جمع وتحليل وعرض البيانات المرتبطة بالأراضي المتاحة والقطاعات المختلفة، بهدف توفير معلومات دقيقة وشاملة تساعد المستثمرين على اتخاذ قرارات مدروسة وفعالة.  
+        <br><br>
+        رؤيتنا هي تمكين الاستثمار المستدام وتعزيز التنمية الاقتصادية والاجتماعية من خلال إتاحة الفرص وربطها بالتقنية الحديثة.
+      </p>
+    </div>
+  </div>
+
+    <!-- <section>
+      <h2 id="about">من نحن</h2>
+      <p>ندعم الاستثمار والتنمية في محافظة القليوبية لتحقيق الاستدامة للأجيال القادمة.</p>
+    </section> -->
+
+    <!-- أضف هذا في رأس الصفحة داخل <head> لتحميل مكتبة Lucide -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<section>
+  <h2>لماذا تستثمر في أراضي القليوبية؟</h2>
+  <div class="features">
+    <div class="feature-box">
+      <i data-lucide="shield-check" class="icon"></i><br>
+      تقليل المخاطر
+      <p class="feature-desc">الاستثمار في القليوبية يساعد في تقليل المخاطر بفضل الاستقرار والفرص المتنوعة.</p>
+    </div>
+    <div class="feature-box">
+      <i data-lucide="trending-up" class="icon"></i><br>
+      عوائد عالية
+      <p class="feature-desc">تحقيق أرباح مرتفعة نتيجة للطلب المتزايد على الأراضي والمشاريع الناجحة بالمحافظة.</p>
+    </div>
+    <div class="feature-box">
+      <i data-lucide="building-2" class="icon"></i><br>
+      أساس قوي
+      <p class="feature-desc">بنية تحتية جيدة وموقع استراتيجي يدعم نمو واستدامة الاستثمارات.</p>
+    </div>
+    <div class="feature-box">
+      <i data-lucide="badge-dollar-sign" class="icon"></i><br>
+      الحماية من التضخم
+      <p class="feature-desc">الاستثمار في الأصول العقارية يحافظ على قيمة رأس المال أمام تقلبات الأسعار.</p>
+    </div>
+  </div>
+</section>
+<section class="latest-news">
+  <h2><i data-lucide="megaphone"></i> آخر الأخبار</h2>
+  <div class="news-slider">
+    
+    <div class="news-slide">
+      <img src="news1.jpg" alt="خبر 1">
+      <div class="news-text">
+        <h3>طرح أراضي جديدة بمدينة بنها</h3>
+        <p>تم الإعلان عن طرح مجموعة من الأراضي الاستثمارية الجديدة داخل مدينة بنها في قطاعات مختلفة.</p>
+        <span class="date">15 يوليو 2025</span>
+      </div>
+    </div>
+
+    <div class="news-slide">
+      <img src="news2.jpg" alt="خبر 2">
+      <div class="news-text">
+        <h3>شراكة مع القطاع الخاص لتطوير الأراضي الزراعية</h3>
+        <p>بروتوكول تعاون جديد بين المحافظة وشركات وطنية لتطوير الأراضي الزراعية المخصصة للاستثمار.</p>
+        <span class="date">10 يوليو 2025</span>
+      </div>
+    </div>
+
+    <div class="news-slide">
+      <img src="news3.jpg" alt="خبر 3">
+      <div class="news-text">
+        <h3>إطلاق البث التجريبي للمنصة الإلكترونية الموحدة لتراخيص الاستثمار</h3>
+        <p>
+          الهيئة العامة للاستثمار تطلق منصة رقمية لتيسير الحصول على التراخيص في خطوة نحو تسهيل إجراءات الاستثمار ودعم التحول الرقمي.
+      </p>
+      <span class="date">14 يوليو 2025</span>
+      <a href="https://www.investinegypt.gov.eg/Arabic/pages/wecanhelp.aspx#51" target="_blank">اقرأ المزيد</a>
+    </div>
+  </div>
+</section>
+
+
+  </div>
+</section>
+
+<!-- لتفعيل الأيقونات بعد تحميل الصفحة -->
+<script>
+  lucide.createIcons();
+</script>
+
+
+    <section>
+      <h2>خريطة الأراضي الاستثمارية</h2>
+      <div id="map"></div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <h3>محافظة القليوبية</h3>
+        <p>نعمل من أجل مستقبل مستدام ومزدهر لكل المواطنين.</p>
+      </div>
+      <div class="footer-links">
+        <h4>روابط سريعة</h4>
+        <ul>
+          <li><a href="#about">من نحن</a></li>
+          <li><a href="/filter.html">فرص الاستثمار</a></li>
+          <li><a href="#about">الأسئلة الشائعة</a></li>
+          <li><a href="http://127.0.0.1:8888/">مساعد ذكي</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>معلومات الاتصال</h4>
+        <p><strong>العنوان:</strong> القليوبية، مصر</p>
+        <p><strong>البريد الإلكتروني:</strong> info@qalyubia.gov.eg</p>
+        <p><strong>الهاتف:</strong> +20 123 456 789</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 محافظة القليوبية. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+
+  const map = L.map('map').setView([30.35, 31.25], 10);
+
+  L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+  }).addTo(map);
+
+  const locations = [
+    { name: "طريق العرب – محاجر أبو زعبل", lat: 30.246, lon: 31.367, area: 270000, type: "استصلاح", price: 10000, suggestion: "مشروع استصلاح زراعي", priority: "high" },
+    { name: "وظيفتك جنب بيتك – طوخ", lat: 30.352, lon: 31.202, area: 17950, type: "سكني", price: 30000, suggestion: "إسكان استثماري + مشروعات صغيرة", priority: "high" },
+    { name: "ترعة البرسومية – ميت كنانة", lat: 30.354, lon: 31.177, area: 12615, type: "خدمي", price: 12000, suggestion: "مجمع خدمات متكامل", priority: "high" },
+    { name: "ش 15 مايو – بهتيم", lat: 30.127, lon: 31.297, area: 7500, type: "سكني", price: 45000, suggestion: "كمبوند حضري أو إسكان متوسط", priority: "high" },
+    { name: "المنشأة الكبرى – كفر شكر", lat: 30.622, lon: 31.257, area: 6952, type: "سكني", price: 2500, suggestion: "إسكان اجتماعي منخفض التكلفة", priority: "high" }
+  ];
+
+  const priorityColors = {
+    high: 'red',
+    medium: 'orange',
+    low: 'blue'
+  };
+
+  locations.forEach(loc => {
+    const marker = L.circleMarker([loc.lat, loc.lon], {
+      radius: 10,
+      color: priorityColors[loc.priority] || 'gray',
+      fillOpacity: 0.8
+    }).addTo(map);
+
+    marker.bindPopup(`
+      <b>${loc.name}</b><br>
+      <div>المساحة: ${loc.area} م²</div>
+      <div>النوع: ${loc.type}</div>
+      <div>سعر المتر: ${loc.price} ج</div>
+      <div>المشروع المقترح: ${loc.suggestion}</div>
+      <div>الأولوية: ${loc.priority === 'high' ? 'عالية 🔴' : loc.priority === 'medium' ? 'متوسطة 🟡' : 'منخفضة 🔵'}</div>
+    `);
+  });
+</script>
+<script>
+  function toggleAbout() {
+  const popup = document.getElementById("about-popup");
+  popup.classList.toggle("open");
+}
+</script>
+
+</body>
+</html>

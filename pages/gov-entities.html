@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-lang-key="gov_entities">كيانات المحافظة</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style/vars.css" />
+    <link rel="stylesheet" href="../style/main.css" />
+    <link rel="stylesheet" href="../style/common-elements.css" />
+    <link rel="stylesheet" href="../style/accessibility.css" />
+    <link rel="stylesheet" href="../style/media.css" />
+    <link rel="stylesheet" href="../style/gov-entities.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo&family=Indie+Flower&family=Lalezar&family=Qahiri&family=UoqMunThenKhung&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="../assets/ico.png" type="image/png" />
+  </head>
+  <body>
+    <div class="progress-indicator">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <section class="entities-section">
+      <div class="container">
+        <div class="section-header">
+          <h2
+            class="section-title readable-text"
+            data-lang-key="gov_directorates"
+          >
+            المدريات بالمحافظة
+          </h2>
+        </div>
+        <div class="gov_cards_wrapper">
+          <div
+            class="gov_card readable-text"
+            id="health"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية الصحه والسكان "
+            data-admin-name-en="Directorate of Health and Population"
+            data-admin-director-ar="د. حمدى الطباخ"
+            data-admin-director-en="Dr. Hamdy El-Tabakh"
+            data-admin-telephone="0133225693 - 0133227451"
+            data-admin-fax="0133248108"
+            data-admin-email="health@qaliobia.gov.eg"
+            data-admin-description-ar="تتولى مديرية الصحة والسكان مسؤولية تقديم الخدمات الصحية للمواطنين وإدارة المستشفيات والمراكز الصحية بالمحافظة."
+            data-admin-description-en="The Directorate of Health and Population is responsible for providing health services to citizens and managing hospitals and health centers in the governorate."
+            data-admin-services-ar="الخدمات الصحية، إدارة المستشفيات"
+            data-admin-services-en=" Housing projects, Urban development"
+            data-admin-address-ar="امام كليه الهندسه شارع الاستاد بنها"
+            data-admin-address-en="In front of the Faculty of Engineering, Stadium Street, Banha"
+          >
+            <h3 data-lang-key="health_pop" class="h2_title">
+              مديرية الصحه والسكان
+            </h3>
+            <img
+              src="../assets/modrayat/healthy.png"
+              alt="مديرية الصحة والسكان"
+            />
+          </div>
+
+          <!-- مديرية التعليم -->
+          <div
+            class="gov_card readable-text"
+            id="education"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية التربيه والتعليم"
+            data-admin-name-en="Education Directorate"
+            data-admin-director-ar="أ. فاطمة عبد الرحمن"
+            data-admin-director-en="Ms. Fatma Abdel Rahman"
+            data-admin-telephone="013-3456789"
+            data-admin-fax="013-3456780"
+            data-admin-email="education@qaliobia.gov.eg"
+            data-admin-description-ar="تشرف مديرية التربية والتعليم على جميع المؤسسات التعليمية في المحافظة من المدارس الابتدائية حتى الثانوية، وتعمل على تطوير المناهج وتحسين جودة التعليم."
+            data-admin-description-en="The Education Directorate supervises all educational institutions in the governorate from primary to secondary schools, and works on developing curricula and improving the quality of education."
+            data-admin-services-ar="إدارة المدارس، تطوير المناهج، تدريب المعلمين، الامتحانات"
+            data-admin-services-en="School management, Curriculum development, Teacher training, Examinations"
+            data-admin-address-ar="القليوبية، بنها، شارع الجمهورية، مبنى مديرية التربية والتعليم"
+            data-admin-address-en="Qalyubia, Banha, El-Gomhouria Street, Directorate of Education Building"
+          >
+            <h3 data-lang-key="directorate_edu" class="h2_title readable-text">
+              مديرية التربيه والتعليم
+            </h3>
+            <img
+              src="../assets/modrayat/education.jpg"
+              alt="وزاره التربيه والتعليم"
+            />
+          </div>
+
+          <!-- مديرية الشباب والرياضه -->
+          <div
+            class="gov_card readable-text"
+            id="youth"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية الشباب والرياضه"
+            data-admin-name-en="Youth and Sports Directorate"
+            data-admin-director-ar="كابتن محمد علي حسن"
+            data-admin-director-en="Captain Mohamed Ali Hassan"
+            data-admin-telephone="013-4567890"
+            data-admin-fax="013-4567891"
+            data-admin-email="youth@qaliobia.gov.eg"
+            data-admin-description-ar="تهتم مديرية الشباب والرياضة بتنمية قدرات الشباب وتوفير الأنشطة الرياضية والثقافية، وإدارة المراكز الشبابية والملاعب الرياضية في المحافظة."
+            data-admin-description-en="The Youth and Sports Directorate focuses on developing youth capabilities and providing sports and cultural activities, and managing youth centers and sports fields in the governorate."
+            data-admin-services-ar="الأنشطة الرياضية، المراكز الشبابية، البرامج الثقافية، الملاعب الرياضية"
+            data-admin-services-en="Sports activities, Youth centers, Cultural programs, Sports fields"
+            data-admin-address-ar="القليوبية، بنها، طريق الإسكندرية الزراعي، بجوار استاد بنها الرياضي"
+            data-admin-address-en="Qalyubia, Banha, Agricultural Alexandria Road, next to Banha Sports Stadium"
+          >
+            <h3 data-lang-key="directorate_edu" class="h2_title readable-text">
+              مديرية الشباب والرياضه
+            </h3>
+            <img
+              src="../assets/modrayat/gov_of_youth.jpg"
+              alt="وزاره الشباب والرياضه"
+            />
+          </div>
+
+          <!-- مديرية الزراعه -->
+          <div
+            class="gov_card readable-text"
+            id="agriculture"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية الزراعه"
+            data-admin-name-en="Agriculture Directorate"
+            data-admin-director-ar="د. عبد الله محمود"
+            data-admin-director-en="Dr. Abdullah Mahmoud"
+            data-admin-telephone="013-5678901"
+            data-admin-fax="013-5678902"
+            data-admin-email="agriculture@qaliobia.gov.eg"
+            data-admin-description-ar="تعمل مديرية الزراعة على دعم المزارعين وتطوير القطاع الزراعي في المحافظة، وتوفير الإرشاد الزراعي والخدمات البيطرية."
+            data-admin-description-en="The Agriculture Directorate works to support farmers and develop the agricultural sector in the governorate, and provide agricultural extension and veterinary services."
+            data-admin-services-ar="الإرشاد الزراعي، الخدمات البيطرية، دعم المزارعين، تطوير الإنتاج الزراعي"
+            data-admin-services-en="Agricultural extension, Veterinary services, Farmer support, Agricultural production development"
+            data-admin-address-ar="القليوبية، بنها، شارع جمال عبد الناصر، مبنى مديرية الزراعة"
+            data-admin-address-en="Qalyubia, Banha, Gamal Abdel Nasser Street, Directorate of Agriculture Building"
+          >
+            <h3 data-lang-key="directorate_agr" class="h2_title readable-text">
+              مديرية الزراعه
+            </h3>
+            <img src="../assets/modrayat/Aug.jpg" alt="وزاره الزراعه" />
+          </div>
+
+          <!-- مديرية التضامن الاجتماعي -->
+          <div
+            class="gov_card readable-text"
+            id="social"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية التضامن الاجتماعي"
+            data-admin-name-en="Social Solidarity Directorate"
+            data-admin-director-ar="أ. نادية إبراهيم"
+            data-admin-director-en="Ms. Nadia Ibrahim"
+            data-admin-telephone="013-6789012"
+            data-admin-fax="013-6789013"
+            data-admin-email="social@qaliobia.gov.eg"
+            data-admin-description-ar="تقدم مديرية التضامن الاجتماعي الخدمات الاجتماعية للمواطنين وتدير برامج الدعم الاجتماعي ورعاية الأسر المحتاجة والأيتام وذوي الاحتياجات الخاصة."
+            data-admin-description-en="The Social Solidarity Directorate provides social services to citizens and manages social support programs and care for needy families, orphans and people with special needs."
+            data-admin-services-ar="الدعم الاجتماعي، رعاية الأيتام، خدمات ذوي الاحتياجات الخاصة، برامج التأهيل"
+            data-admin-services-en="Social support, Orphan care, Special needs services, Rehabilitation programs"
+            data-admin-address-ar="القليوبية، بنها، شارع سعد زغلول، مبنى مديرية التضامن الاجتماعي"
+            data-admin-address-en="Qalyubia, Banha, Saad Zaghloul Street, Directorate of Social Solidarity Building"
+          >
+            <h3 data-lang-key="directorate_soc" class="h2_title readable-text">
+              مديرية التضامن الاجتماعي
+            </h3>
+            <img
+              src="../assets/modrayat/tadamon_gov.png"
+              alt="وزاره التضامن الاجتماعي"
+            />
+          </div>
+
+          <!-- مديرية القوى العامله -->
+          <div
+            class="gov_card readable-text"
+            id="labour"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية القوي العامله والهجره"
+            data-admin-name-en="Manpower and Migration Directorate"
+            data-admin-director-ar="م. خالد عبد العزيز"
+            data-admin-director-en="Eng. Khaled Abdel Aziz"
+            data-admin-telephone="013-7890123"
+            data-admin-fax="013-7890124"
+            data-admin-email="labour@qaliobia.gov.eg"
+            data-admin-description-ar="تختص مديرية القوى العاملة والهجرة بتنظيم سوق العمل وتوفير فرص العمل للمواطنين، وإدارة شؤون العمالة والهجرة الخارجية."
+            data-admin-description-en="The Manpower and Migration Directorate specializes in organizing the labor market and providing job opportunities for citizens, and managing labor affairs and external migration."
+            data-admin-services-ar="توفير فرص العمل، تنظيم سوق العمل، شؤون الهجرة، التدريب المهني"
+            data-admin-services-en="Job opportunities, Labor market organization, Migration affairs, Vocational training"
+            data-admin-address-ar="القليوبية، بنها، شارع أحمد عرابي، مبنى مديرية القوى العاملة"
+            data-admin-address-en="Qalyubia, Banha, Ahmed Orabi Street, Directorate of Manpower Building"
+          >
+            <h3
+              class="h2_title readable-text"
+              data-lang-key="directorate_manpower"
+            >
+              مديرية القوي العامله والهجره
+            </h3>
+            <img src="../assets/modrayat/power.jpg" alt="وزاره القوي العامله" />
+          </div>
+
+          <!-- مديرية التموين -->
+          <div
+            class="gov_card readable-text"
+            id="supply"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية التموين"
+            data-admin-name-en="Supply Directorate"
+            data-admin-director-ar="أ. سامي محمد فتحي"
+            data-admin-director-en="Mr. Sami Mohamed Fathy"
+            data-admin-telephone="013-8901234"
+            data-admin-fax="013-8901235"
+            data-admin-email="supply@qaliobia.gov.eg"
+            data-admin-description-ar="تدير مديرية التموين نظام البطاقات التموينية وتوزيع السلع المدعمة على المواطنين، وتشرف على المخابز والأسواق التجارية."
+            data-admin-description-en="The Supply Directorate manages the ration card system and distribution of subsidized goods to citizens, and supervises bakeries and commercial markets."
+            data-admin-services-ar="البطاقات التموينية، السلع المدعمة، إدارة المخابز، الأسواق التجارية"
+            data-admin-services-en="Ration cards, Subsidized goods, Bakery management, Commercial markets"
+            data-admin-address-ar="القليوبية، بنها، شارع كورنيش النيل، مبنى مديرية التموين"
+            data-admin-address-en="Qalyubia, Banha, Nile Corniche Street, Directorate of Supply Building"
+          >
+            <h3 data-lang-key="directorate_soc" class="h2_title readable-text">
+              مديرية التموين
+            </h3>
+            <img src="../assets/modrayat/tamyen.jpg" alt="وزاره التموين" />
+          </div>
+
+          <!-- مديرية الاوقاف -->
+          <div
+            class="gov_card readable-text"
+            id="awqaf"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية الاوقاف"
+            data-admin-name-en="Religious Endowments Directorate"
+            data-admin-director-ar="الشيخ أحمد عبد الحليم"
+            data-admin-director-en="Sheikh Ahmed Abdel Halim"
+            data-admin-telephone="013-9012345"
+            data-admin-fax="013-9012346"
+            data-admin-email="awqaf@qaliobia.gov.eg"
+            data-admin-description-ar="تشرف مديرية الأوقاف على المساجد والمؤسسات الدينية في المحافظة، وتنظم الأنشطة الدينية والثقافية الإسلامية."
+            data-admin-description-en="The Religious Endowments Directorate supervises mosques and religious institutions in the governorate, and organizes Islamic religious and cultural activities."
+            data-admin-services-ar="إدارة المساجد، الأنشطة الدينية، التعليم الديني، الأوقاف الخيرية"
+            data-admin-services-en="Mosque management, Religious activities, Religious education, Charitable endowments"
+            data-admin-address-ar="القليوبية، بنها، شارع الإمام محمد عبده، مبنى مديرية الأوقاف"
+            data-admin-address-en="Qalyubia, Banha, Imam Mohamed Abdo Street, Directorate of Religious Endowments Building"
+          >
+            <h3
+              class="h2_title readable-text"
+              data-lang-key="directorate_religious"
+            >
+              مديرية الاوقاف
+            </h3>
+            <img src="../assets/modrayat/prey.jpg" alt="وزاره الاوقاف" />
+          </div>
+
+          <!-- مديرية التنظيم واداره -->
+          <div
+            class="gov_card readable-text"
+            id="organization"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية التنظيم واداره"
+            data-admin-name-en="Organization and Administration Directorate"
+            data-admin-director-ar="د. هشام عبد الفتاح"
+            data-admin-director-en="Dr. Hisham Abdel Fattah"
+            data-admin-telephone="013-0123456"
+            data-admin-fax="013-0123457"
+            data-admin-email="organization@qaliobia.gov.eg"
+            data-admin-description-ar="تختص مديرية التنظيم والإدارة بتطوير الهيكل الإداري للمحافظة وتحسين الخدمات الحكومية وتدريب الموظفين."
+            data-admin-description-en="The Organization and Administration Directorate specializes in developing the administrative structure of the governorate and improving government services and training employees."
+            data-admin-services-ar="التطوير الإداري، تدريب الموظفين، تحسين الخدمات، الهيكل التنظيمي"
+            data-admin-services-en="Administrative development, Employee training, Service improvement, Organizational structure"
+            data-admin-address-ar="القليوبية، بنها، شارع عبد المنعم رياض، مبنى مديرية التنظيم والإدارة"
+            data-admin-address-en="Qalyubia, Banha, Abdel Moneim Riad Street, Directorate of Organization and Administration Building"
+          >
+            <h3 data-lang-key="directorate_org" class="h2_title readable-text">
+              مديرية التنظيم واداره
+            </h3>
+            <img
+              src="../assets/modrayat/tanzem_and_mangment.jpg"
+              alt="وزاره التنظيم واداره"
+            />
+          </div>
+
+          <!-- مديرية الري -->
+          <div
+            class="gov_card readable-text"
+            id="irrigation"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية الري"
+            data-admin-name-en="Irrigation Directorate"
+            data-admin-director-ar="م. محمد عبد الباسط"
+            data-admin-director-en="Eng. Mohamed Abdel Basit"
+            data-admin-telephone="013-1234567"
+            data-admin-fax="013-1234568"
+            data-admin-email="irrigation@qaliobia.gov.eg"
+            data-admin-description-ar="تدير مديرية الري شبكة الري والصرف في المحافظة، وتشرف على توزيع المياه للأغراض الزراعية والمنزلية."
+            data-admin-description-en="The Irrigation Directorate manages the irrigation and drainage network in the governorate, and supervises water distribution for agricultural and domestic purposes."
+            data-admin-services-ar="شبكة الري، إدارة المياه، الصرف الزراعي، صيانة الترع"
+            data-admin-services-en="Irrigation network, Water management, Agricultural drainage, Canal maintenance"
+            data-admin-address-ar="القليوبية، بنها، شارع الري، مبنى مديرية الري"
+            data-admin-address-en="Qalyubia, Banha, El-Ray Street, Directorate of Irrigation Building"
+          >
+            <h3 data-lang-key="directorate_irr" class="h2_title readable-text">
+              مديرية الري
+            </h3>
+            <img src="../assets/modrayat/water.jpg" alt="وزاره الري" />
+          </div>
+
+          <!-- مديرية الطرق -->
+          <div
+            class="gov_card readable-text"
+            id="roads"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية الطرق"
+            data-admin-name-en="Roads Directorate"
+            data-admin-director-ar="م. عادل صلاح الدين"
+            data-admin-director-en="Eng. Adel Salah El-Din"
+            data-admin-telephone="013-2345670"
+            data-admin-fax="013-2345671"
+            data-admin-email="roads@qaliobia.gov.eg"
+            data-admin-description-ar="تشرف مديرية الطرق على صيانة وتطوير شبكة الطرق في المحافظة، وتنفيذ مشاريع البنية التحتية للنقل."
+            data-admin-description-en="The Roads Directorate supervises the maintenance and development of the road network in the governorate, and implements transportation infrastructure projects."
+            data-admin-services-ar="صيانة الطرق، مشاريع البنية التحتية، تطوير الشوارع، إشارات المرور"
+            data-admin-services-en="Road maintenance, Infrastructure projects, Street development, Traffic signals"
+            data-admin-address-ar="القليوبية، بنها، شارع الجيش، مبنى مديرية الطرق"
+            data-admin-address-en="Qalyubia, Banha, El-Geish Street, Directorate of Roads Building"
+          >
+            <h3
+              data-lang-key="directorate_roads"
+              class="h2_title readable-text"
+            >
+              مديرية الطرق
+            </h3>
+            <img src="../assets/modrayat/road.jpg" alt="وزاره الطرق" />
+          </div>
+
+          <!-- مديرية الاسكان -->
+          <div
+            class="gov_card readable-text"
+            id="housing"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية الاسكان"
+            data-admin-name-en="Housing Directorate"
+            data-admin-director-ar="م. رانيا أحمد"
+            data-admin-director-en="Eng. Rania Ahmed"
+            data-admin-telephone="013-3456781"
+            data-admin-fax="013-3456782"
+            data-admin-email="housing@qaliobia.gov.eg"
+            data-admin-description-ar="تعمل مديرية الإسكان على توفير الوحدات السكنية للمواطنين وتنفيذ مشاريع الإسكان الاجتماعي والتطوير العمراني."
+            data-admin-description-en="The Housing Directorate works to provide housing units for citizens and implement social housing projects and urban development."
+            data-admin-services-ar="الإسكان الاجتماعي، التطوير العمراني، الوحدات السكنية، التخطيط العمراني"
+            data-admin-services-en="Social housing, Urban development, Housing units, Urban planning"
+            data-admin-address-ar="القليوبية، بنها، شارع عبد الهادي، مبنى مديرية الإسكان"
+            data-admin-address-en="Qalyubia, Banha, Abdel Hadi Street, Directorate of Housing Building"
+          >
+            <h3
+              data-lang-key="directorate_housing"
+              class="h2_title readable-text"
+            >
+              مديرية الاسكان
+            </h3>
+            <img src="../assets/modrayat/askan.png" alt="وزاره الاسكان" />
+          </div>
+
+          <!-- مديرية الطب البطري -->
+          <div
+            class="gov_card readable-text"
+            id="veterinary"
+            onclick="showAdminDetail(this)"
+            data-admin-name-ar="مديرية الطب البطري"
+            data-admin-name-en="Veterinary Medicine Directorate"
+            data-admin-director-ar="د. مصطفى عبد الرؤوف"
+            data-admin-director-en="Dr. Mostafa Abdel Raouf"
+            data-admin-telephone="013-4567892"
+            data-admin-fax="013-4567893"
+            data-admin-email="veterinary@qaliobia.gov.eg"
+            data-admin-description-ar="تقدم مديرية الطب البيطري الخدمات البيطرية للحيوانات وتشرف على سلامة الغذاء الحيواني والصحة العامة البيطرية."
+            data-admin-description-en="The Veterinary Medicine Directorate provides veterinary services for animals and supervises animal food safety and public veterinary health."
+            data-admin-services-ar="الخدمات البيطرية، سلامة الغذاء الحيواني، الصحة العامة البيطرية، مكافحة الأمراض"
+            data-admin-services-en="Veterinary services, Animal food safety, Public veterinary health, Disease control"
+            data-admin-address-ar="القليوبية، بنها، شارع الفالوجا، مبنى مديرية الطب البيطري"
+            data-admin-address-en="Qalyubia, Banha, El-Falooga Street, Directorate of Veterinary Medicine Building"
+          >
+            <h3 data-lang-key="directorate_vete" class="h2_title readable-text">
+              مديرية الطب البطري
+            </h3>
+            <img
+              src="../assets/modrayat/animal_doc.jpg"
+              alt="وزاره الطب البطري"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- </div> -->
+    </section>
+
+    <section>
+      <div class="admin-detail-overlay" id="adminDetailOverlay">
+        <div class="admin-detail-container">
+          <button class="close-detail-btn" onclick="closeAdminDetail()">
+            <i class="fas fa-times"></i>
+          </button>
+
+          <div class="admin-card-centered" id="adminCardCentered">
+            <h3 class="h2_title" id="adminCenteredTitle">مديرية</h3>
+            <img id="adminCenteredImage" src="" alt="" />
+          </div>
+
+          <div class="admin-details-panel" id="adminDetailsPanel">
+            <h2
+              class="admin-details-title readable-text"
+              id="adminDetailsTitle"
+            >
+              تفاصيل المديرية
+            </h2>
+
+            <div class="admin-description readable-text" id="adminDescription">
+              وصف المديرية
+            </div>
+
+            <div class="admin-details-grid">
+              <div class="detail-item">
+                <div
+                  class="detail-label readable-text"
+                  data-lang-key="director_label"
+                >
+                  <i class="fas fa-user"></i>
+                  المدير:
+                </div>
+                <div class="detail-value readable-text" id="adminDirector">
+                  اسم المدير
+                </div>
+              </div>
+
+              <div class="detail-item">
+                <div
+                  class="detail-label readable-text"
+                  data-lang-key="telephone_label"
+                >
+                  <i class="fas fa-phone"></i>
+                  الهاتف:
+                </div>
+                <div class="detail-value readable-text" id="adminTelephone">
+                  رقم الهاتف
+                </div>
+              </div>
+
+              <div class="detail-item">
+                <div
+                  class="detail-label readable-text"
+                  data-lang-key="fax_label"
+                >
+                  <i class="fas fa-fax"></i>
+                  الفاكس:
+                </div>
+                <div class="detail-value readable-text" id="adminFax">
+                  رقم الفاكس
+                </div>
+              </div>
+
+              <div class="detail-item">
+                <div
+                  class="detail-label readable-text"
+                  data-lang-key="email_label"
+                >
+                  <i class="fas fa-envelope"></i>
+                  البريد الإلكتروني:
+                </div>
+                <div class="detail-value readable-text" id="adminEmail">
+                  <a href="#" id="adminEmailLink">البريد الإلكتروني</a>
+                </div>
+              </div>
+
+              <div class="detail-item" style="grid-column: 1 / -1">
+                <div
+                  class="detail-label readable-text"
+                  data-lang-key="address_label"
+                >
+                  <i class="fas fa-map-marker-alt"></i>
+                  العنوان:
+                </div>
+                <div class="detail-value readable-text" id="adminAddress">
+                  عنوان المديرية
+                </div>
+              </div>
+
+              <div class="detail-item" style="grid-column: 1 / -1">
+                <div
+                  class="detail-label readable-text"
+                  data-lang-key="services_label"
+                >
+                  <i class="fas fa-cogs"></i>
+                  الخدمات المقدمة:
+                </div>
+                <div class="detail-value readable-text" id="adminServices">
+                  الخدمات المقدمة
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="diagram-section">
+      <div class="container">
+        <div class="section-header">
+          <h2
+            class="section-title readable-text"
+            data-lang-key="general_office"
+          >
+            إدارات الديوان العام
+          </h2>
+        </div>
+
+        <div class="level">
+          <div
+            class="node readable-text"
+            id="governor"
+            data-lang-key="governor_office"
+            data-departments="governor-deps"
+          >
+            المحافظ
+            <div class="arrow arrow-vertical"></div>
+          </div>
+        </div>
+
+        <div class="branches branch-connector" id="governor-deps">
+          <div class="branch">
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_1"
+              data-dept="1"
+            >
+              إ.م شئون مكتب المحافظ
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_2"
+              data-dept="2"
+            >
+              إ.ع التخطيط العمراني
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_3"
+              data-dept="3"
+            >
+              إ.ع للشئون القانونية
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_4"
+              data-dept="4"
+            >
+              إ.ع حماية املاك الدولة
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_5"
+              data-dept="5"
+            >
+              ا. شئون الاتصال
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_6"
+              data-dept="6"
+            >
+              ا. الازمات والكوارث
+            </div>
+          </div>
+
+          <div class="branch">
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_7"
+              data-dept="7"
+            >
+              إ.ع المركز المعلومات ودعم القرار
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_8"
+              data-dept="8"
+            >
+              إ.ع للانتاج والشئون الاقتصادية
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_9"
+              data-dept="9"
+            >
+              إ.ع للتخطيط والمتابعة
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_10"
+              data-dept="10"
+            >
+              إ.ع للعلاقات العامة
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_11"
+              data-dept="11"
+            >
+              ا. التحليل والتطوير المالي
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_office_12"
+              data-dept="12"
+            >
+              ا. المكتب الفنى
+            </div>
+          </div>
+        </div>
+
+        <div class="secretary-level">
+          <div
+            class="node readable-text"
+            id="secretary"
+            data-lang-key="governor_secretary"
+            data-departments="secretary-deps"
+          >
+            السكرتير العام
+            <div class="secretary-connector"></div>
+          </div>
+          <div class="arrow secretary-arrow-vertical"></div>
+        </div>
+
+        <div class="secretary-branches" id="secretary-deps">
+          <div class="secretary-horizontal"></div>
+          <div class="branch">
+            <div
+              class="department readable-text"
+              data-lang-key="governor_secretary_1"
+              data-dept="13"
+              id="assistant-deps"
+            >
+              إ.ع النظافة والتجميل
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_secretary_2"
+              data-dept="14"
+            >
+              إ.ع الشئون الهندسية
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_secretary_3"
+              data-dept="15"
+            >
+              إ حماية النيل
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_secretary_4"
+              data-dept="16"
+            >
+              إ. التعاون الزراعي
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_secretary_5"
+              data-dept="17"
+            >
+              إ. بناء وتنمية القرية
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="governor_secretary_6"
+              data-dept="18"
+            >
+              إ. محو الامية وتعليم الكبار
+            </div>
+          </div>
+
+          <div class="branch">
+            <div
+              class="node readable-text assistant-secretary-node"
+              id="assistant-secretary"
+              data-lang-key="assi_governor_secretary"
+              data-departments="assistant-deps"
+            >
+              السكرتير العام المساعد
+              <div class="arrow assistant-secretary-arrow-vertical"></div>
+            </div>
+
+            <div
+              class="department readable-text"
+              data-dept="19"
+              data-lang-key="assi_governor_secretary_1"
+              style="margin-top: 30px"
+            >
+              إ.ع شئون العاملين
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="assi_governor_secretary_2"
+              data-dept="20"
+            >
+              إ.ع للشئون المالية والادارية
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="assi_governor_secretary_3"
+              data-dept="21"
+            >
+              شئون لجان مجالس ومؤتمرات
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="assi_governor_secretary_4"
+              data-dept="22"
+            >
+              ا. اسكان اقتصادي
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="assi_governor_secretary_5"
+              data-dept="23"
+            >
+              إ. التعاون الانتاجي
+            </div>
+            <div
+              class="department readable-text"
+              data-lang-key="assi_governor_secretary_6"
+              data-dept="24"
+            >
+              إ. الشئون الادارية
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="../script/languages.js"></script>
+    <script src="../script/main.js"></script>
+    <script src="../script/theme.js"></script>
+    <script src="../script/accessibility.js"></script>
+    <script src="../script/commonElements.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        loadNavbar("../");
+        loadFooter("../");
+      });
+    </script>
+  </body>
+</html>

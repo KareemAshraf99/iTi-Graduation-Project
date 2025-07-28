@@ -1,0 +1,182 @@
+ body {
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      direction: rtl;
+    }
+    header {
+      background: linear-gradient(to left, #1f2020, #c56307);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .dashboard {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .card h3 {
+      margin-bottom: 0.5rem;
+      color: #74340a;
+    }
+    .card p {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .back {
+      display: block;
+      text-align: center;
+      margin: 2rem 0;
+      color: #b83b15;
+      text-decoration: none;
+    }
+    .back:hover {
+      text-decoration: underline;
+    }
+/* الخريطة تأخذ العرض الكامل */
+#map {
+    height: 100vh;
+    margin-left: 400px;
+    margin-right: 10;
+    margin-top: 80px;
+}
+
+
+
+/* الشريط الجانبي يسار للطبقات */
+#sidebar-left {
+    position: absolute;
+    top: 990px;
+    right: 10px;
+    background-color: rgb(230, 204, 183);
+    padding: 10px;
+    border: 1px solid #ccc;
+    width: 200px;
+    z-index: 1000;
+    font-size: 14px;
+}
+
+/* الشريط الجانبي يمين للرسم البياني */
+#sidebar-right {
+    position: absolute;
+    top: 600px;
+    left: 10px;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    width: 350px;
+    z-index: 1000;
+}
+#filters label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+#filters select {
+    width: 90%;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+#filter-box {
+    width: 600px;
+    position: relative;
+    top: -794px;
+    right: 10px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    direction: rtl;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#filter-box label {
+  font-weight: bold;
+}
+
+#filter-box select {
+  padding: 5px;
+  font-size: 14px;
+}
+
+#findNearestBtn {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #5d2802;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#findNearestBtn:hover {
+  background-color: #2980b9;
+}
+/* #chart-container {
+  width: 100%;
+  height: 250px;
+  margin-top: 20px;
+}
+
+#serviceChart {
+  width: 100% !important;
+  height: 100% !important;
+} */
+
+
+#centerChartSection {
+  max-width: 600px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+
+}
+
+#centerChart {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 300px;
+}
+
+#service-gap-card {
+  grid-column: span 2;
+  background: white;
+  padding: 1rem;
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#service-gaps-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+#service-gaps-table th,
+#service-gaps-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: right;
+}
+
+#service-gaps-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+

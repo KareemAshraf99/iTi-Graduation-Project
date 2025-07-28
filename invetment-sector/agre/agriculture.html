@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>القطاع الزراعي - محافظة القليوبية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/esri-leaflet@3.0.12/dist/esri-leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <style>
+      body {
+        font-family: 'Cairo', sans-serif;
+        margin: 0;
+        background: #f4f4f4;
+        direction: rtl;
+      }
+      header {
+        background: linear-gradient(to left, #1f2020, #2e7d32);
+        color: white;
+        padding: 1rem;
+        text-align: center;
+      }
+      .dashboard {
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+      .card {
+        background: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      .card h3 {
+        margin-bottom: 0.5rem;
+        color: #2e7d32;
+      }
+      .card p {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .back {
+        display: block;
+        text-align: center;
+        margin: 2rem 0;
+        color: #2e7d32;
+        text-decoration: none;
+      }
+      .back:hover {
+        text-decoration: underline;
+      }
+      #map {
+        height: 400px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+      }
+      .charts-dashboard {
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        background: #e8f5e9;
+        border-radius: 10px;
+        margin: 0 2rem 2rem 2rem;
+      }
+      .chart-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      .chart-card h3 {
+        margin-bottom: 0.5rem;
+        color: #2e7d32;
+        font-size: 1.2rem;
+      }
+      canvas {
+        max-width: 100%;
+      }
+      .leaflet-control-layers-base label,
+      .leaflet-control-layers-overlays label {
+        font-family: 'Cairo', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>القطاع الزراعي</h1>
+      <p>عرض لأهم مؤشرات وفرص الاستثمار في الزراعة بمحافظة القليوبية</p>
+    </header>
+
+    <section class="dashboard">
+      <div class="card">
+        <h3>مساحة الأراضي المزروعة</h3>
+        <p id="totalArea"> 156000 فدان </p>
+      </div>
+      <div class="card">
+        <h3>الإنتاج السنوي</h3>
+        <p id="totalProduction">0 طن</p>
+      </div>
+      <div class="card">
+        <h3>عدد المحاصيل</h3>
+        <p id="cropCount">0</p>
+      </div>
+      <div class="card">
+        <h3>نوع الاستثمار</h3>
+        <p>استصلاح، استزراع</p>
+      </div>
+    </section>
+
+    <section class="map-section">
+      <div id="map"></div>
+    </section>
+
+    <section class="charts-dashboard">
+      <div class="chart-card">
+        <h3>توزيع أنواع المحاصيل (الإنتاج)</h3>
+        <canvas id="pieChartProduction"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>توزيع المساحة حسب المحصول</h3>
+        <canvas id="pieChartArea"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>الإنتاج السنوي حسب المحصول</h3>
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>اتجاهات الإنتاج السنوي</h3>
+        <canvas id="lineChart"></canvas>
+      </div>
+    </section>
+
+    <a href="http://127.0.0.1:5500/homepage/Home.html" class="back">⟵ الرجوع إلى الصفحة الرئيسية</a>
+
+    <script>
+      // Initialize Leaflet map with Esri Imagery basemap
+      const map = L.map('map').setView([30.4667, 31.1833], 10); // Centered on Qalyubia
+      const basemap = L.esri.basemapLayer('Imagery').addTo(map);
+      L.esri.basemapLayer('ImageryLabels').addTo(map); // Add labels for clarity
+
+      // Define custom icon for crops (default Leaflet marker)
+      const cropIcon = L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        shadowSize: [41, 41]
+      });
+
+      // Layer to hold crop points
+      const cropsLayer = L.geoJSON(null, {
+        pointToLayer: function(feature, latlng) {
+          return L.marker(latlng, { icon: cropIcon });
+        },
+        onEachFeature: function(feature, layer) {
+          if (feature.properties) {
+            const cropName = cropTranslations[feature.properties.Crop] || feature.properties.Crop;
+            layer.bindPopup(
+              `<b>المحصول: ${cropName}</b><br>` +
+              `الموسم: ${feature.properties.Season || 'غير محدد'}<br>` +
+              `السنة: ${feature.properties.Year || 'غير محدد'}<br>` +
+              `المساحة المزروعة: ${feature.properties.Cultivated_Area_Feddan} فدان<br>` +
+              `الإنتاج: ${feature.properties.Production_Tons} طن`
+            );
+          }
+        }
+      }).addTo(map);
+
+      // Crop name translations
+      const cropTranslations = {
+        'Potatoes': 'بطاطس',
+        'Tomatoes': 'طماطم',
+        'Rice': 'أرز',
+        'Oranges': 'برتقال',
+        'Wheat': 'قمح',
+        'Banana': 'موز'
+      };
+
+      // Your GeoJSON data embedded directly (replace this with fetch if loading externally)
+      const geojsonData = {"type":"FeatureCollection","features":[{"type":"Feature","id":1,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":1,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Potatoes","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":288.17000000000002,"Production_Tons":331.33999999999997,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":2,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":2,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Tomatoes","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":63,"Production_Tons":1015.09,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":3,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":3,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Potatoes","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":336.60000000000002,"Production_Tons":350.44,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":4,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":4,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Potatoes","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":19.670000000000002,"Production_Tons":564.63,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":5,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":5,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Rice","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":356.18000000000001,"Production_Tons":411.61000000000001,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":6,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":6,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Tomatoes","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":406.38999999999999,"Production_Tons":971.75,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":7,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":7,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Tomatoes","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":179.84999999999999,"Production_Tons":902.37,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":8,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":8,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Tomatoes","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":333.01999999999998,"Production_Tons":582.62,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":9,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":9,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Potatoes","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":20.98,"Production_Tons":1100.5599999999999,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":10,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":10,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Potatoes","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":219.47,"Production_Tons":481.69,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":11,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":11,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Potatoes","Season":"Nili","Year":2021,"Cultivated_Area_Feddan":212.63,"Production_Tons":429.19,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":12,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":12,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Oranges","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":360.07999999999998,"Production_Tons":1110.3199999999999,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":13,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":13,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Potatoes","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":273.68000000000001,"Production_Tons":1036.05,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":14,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":14,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Rice","Season":"Winter","Year":2022,"Cultivated_Area_Feddan":340.5,"Production_Tons":38.25,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":15,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":15,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Wheat","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":280.00999999999999,"Production_Tons":768.69000000000005,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":16,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":16,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Wheat","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":361.08999999999997,"Production_Tons":868.00999999999999,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":17,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":17,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Oranges","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":11.19,"Production_Tons":1124.74,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":18,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":18,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Tomatoes","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":13.449999999999999,"Production_Tons":1024.5,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":19,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":19,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Oranges","Season":"Winter","Year":2022,"Cultivated_Area_Feddan":311.20999999999998,"Production_Tons":1050.01,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":20,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":20,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Banana","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":135.5,"Production_Tons":696.37,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":21,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":21,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Potatoes","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":211.68000000000001,"Production_Tons":444.88999999999999,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":22,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":22,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Wheat","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":79.829999999999998,"Production_Tons":792.96000000000004,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":23,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":23,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Potatoes","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":444.63,"Production_Tons":267.76999999999998,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":24,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":24,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Wheat","Season":"Winter","Year":2022,"Cultivated_Area_Feddan":113.51000000000001,"Production_Tons":595.46000000000004,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":25,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":25,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Rice","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":392.56,"Production_Tons":198.22999999999999,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":26,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":26,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Wheat","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":374.85000000000002,"Production_Tons":30.25,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":27,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":27,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Tomatoes","Season":"Nili","Year":2021,"Cultivated_Area_Feddan":208.11000000000001,"Production_Tons":666,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":28,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":28,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Rice","Season":"Nili","Year":2021,"Cultivated_Area_Feddan":384.95999999999998,"Production_Tons":724.29999999999995,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":29,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":29,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Oranges","Season":"Nili","Year":2021,"Cultivated_Area_Feddan":150.38,"Production_Tons":1049.5799999999999,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":30,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":30,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Banana","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":30.120000000000001,"Production_Tons":1124.29,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":31,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":31,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Oranges","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":454.80000000000001,"Production_Tons":1151.23,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":32,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":32,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Tomatoes","Season":"Winter","Year":2022,"Cultivated_Area_Feddan":32.350000000000001,"Production_Tons":611.61000000000001,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":33,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":33,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Wheat","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":116.13,"Production_Tons":702.37,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":34,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":34,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Wheat","Season":"Nili","Year":2021,"Cultivated_Area_Feddan":366.31,"Production_Tons":366.38999999999999,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":35,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":35,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Oranges","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":420.05000000000001,"Production_Tons":967.86000000000001,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":36,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":36,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Rice","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":403.76999999999998,"Production_Tons":1184.48,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":37,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":37,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Tomatoes","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":301.64999999999998,"Production_Tons":142.30000000000001,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":38,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":38,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Rice","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":469.12,"Production_Tons":925.02999999999997,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":39,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":39,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Rice","Season":"Winter","Year":2022,"Cultivated_Area_Feddan":131.25999999999999,"Production_Tons":669.50999999999999,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":40,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":40,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Potatoes","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":138.91999999999999,"Production_Tons":723.91999999999996,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":41,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":41,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Oranges","Season":"Winter","Year":2022,"Cultivated_Area_Feddan":360.14999999999998,"Production_Tons":554.44000000000005,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":42,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":42,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Rice","Season":"Nili","Year":2021,"Cultivated_Area_Feddan":98.890000000000001,"Production_Tons":216.43000000000001,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":43,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":43,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Wheat","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":258.51999999999998,"Production_Tons":738.16999999999996,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":44,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":44,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Potatoes","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":410.50999999999999,"Production_Tons":518.49000000000001,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":45,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":45,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Banana","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":107.34999999999999,"Production_Tons":116.83,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":46,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":46,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Potatoes","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":199.38999999999999,"Production_Tons":773.60000000000002,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":47,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":47,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Banana","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":48.479999999999997,"Production_Tons":1182.1800000000001,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":48,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":48,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Tomatoes","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":403.24000000000001,"Production_Tons":880.12,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":49,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":49,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Rice","Season":"Nili","Year":2021,"Cultivated_Area_Feddan":51.960000000000001,"Production_Tons":207.65000000000001,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":50,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":50,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Banana","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":476.24000000000001,"Production_Tons":161.28,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":51,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":51,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Wheat","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":144.05000000000001,"Production_Tons":641.16999999999996,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":52,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":52,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Potatoes","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":243.22,"Production_Tons":490.44999999999999,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":53,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":53,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Wheat","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":181.88,"Production_Tons":898.46000000000004,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":54,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":54,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Tomatoes","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":224.75999999999999,"Production_Tons":804.77999999999997,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":55,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":55,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Banana","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":319.13,"Production_Tons":111.20999999999999,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":56,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":56,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Potatoes","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":239.78999999999999,"Production_Tons":929.40999999999997,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":57,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":57,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Potatoes","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":29.710000000000001,"Production_Tons":997.22000000000003,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":58,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":58,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Tomatoes","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":341.88999999999999,"Production_Tons":775.25,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":59,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":59,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Banana","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":182.27000000000001,"Production_Tons":1183.5799999999999,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":60,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":60,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Wheat","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":369.13,"Production_Tons":611,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":61,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":61,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Potatoes","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":356.92000000000002,"Production_Tons":1022.6799999999999,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":62,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":62,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Rice","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":80.310000000000002,"Production_Tons":120.61,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":63,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":63,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Wheat","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":142.11000000000001,"Production_Tons":478.38999999999999,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":64,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":64,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Wheat","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":168.87,"Production_Tons":266.13,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":65,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":65,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Banana","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":445.01999999999998,"Production_Tons":745.97000000000003,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":66,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":66,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Tomatoes","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":122.22,"Production_Tons":378.72000000000003,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":67,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":67,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Banana","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":209.19,"Production_Tons":942.29999999999995,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":68,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":68,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Banana","Season":"Nili","Year":2021,"Cultivated_Area_Feddan":379.88,"Production_Tons":291.56999999999999,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":69,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":69,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Oranges","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":479.31999999999999,"Production_Tons":361.54000000000002,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":70,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":70,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Wheat","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":424.81999999999999,"Production_Tons":794.64999999999998,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":71,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":71,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Oranges","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":277.10000000000002,"Production_Tons":157.38,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":72,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":72,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Wheat","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":131.97,"Production_Tons":914.59000000000003,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":73,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":73,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Tomatoes","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":274.81,"Production_Tons":459.70999999999998,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":74,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":74,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Oranges","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":90.340000000000003,"Production_Tons":290.69999999999999,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":75,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":75,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Oranges","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":325.22000000000003,"Production_Tons":577.88999999999999,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":76,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":76,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Wheat","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":186.78999999999999,"Production_Tons":335.72000000000003,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":77,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":77,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Oranges","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":198.46000000000001,"Production_Tons":736.62,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":78,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":78,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Potatoes","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":49.850000000000001,"Production_Tons":315.06,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":79,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":79,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Oranges","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":360.13999999999999,"Production_Tons":1099.71,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":80,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":80,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Potatoes","Season":"Winter","Year":2022,"Cultivated_Area_Feddan":212.86000000000001,"Production_Tons":960.97000000000003,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":81,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":81,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Potatoes","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":212.53999999999999,"Production_Tons":912.78999999999996,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":82,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":82,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Tomatoes","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":258.23000000000002,"Production_Tons":473.05000000000001,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":83,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":83,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Wheat","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":323.52999999999997,"Production_Tons":611.05999999999995,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":84,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":84,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Wheat","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":246.36000000000001,"Production_Tons":511.20999999999998,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":85,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":85,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Wheat","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":462.24000000000001,"Production_Tons":772.01999999999998,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":86,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":86,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Banana","Season":"Summer","Year":2022,"Cultivated_Area_Feddan":232.88999999999999,"Production_Tons":325.08999999999997,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":87,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":87,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Wheat","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":427.51999999999998,"Production_Tons":233.63999999999999,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":88,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":88,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Wheat","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":158.59,"Production_Tons":438.23000000000002,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":89,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":89,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Tomatoes","Season":"Nili","Year":2021,"Cultivated_Area_Feddan":401.50999999999999,"Production_Tons":947.79999999999995,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":90,"geometry":{"type":"Point","coordinates":[31.220000000000027,30.250000000000057]},"properties":{"OBJECTID":90,"Governorate":"Al Qalyubia","District":"Shebin El Qanater","Crop":"Banana","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":393.32999999999998,"Production_Tons":801.20000000000005,"Latitude":30.25,"Longitude":31.219999999999999}},{"type":"Feature","id":91,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":91,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Oranges","Season":"Winter","Year":2023,"Cultivated_Area_Feddan":427.32999999999998,"Production_Tons":657.08000000000004,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":92,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":92,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Potatoes","Season":"Summer","Year":2021,"Cultivated_Area_Feddan":395.08999999999997,"Production_Tons":1105.24,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":93,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":93,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Tomatoes","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":26.59,"Production_Tons":20.170000000000002,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":94,"geometry":{"type":"Point","coordinates":[31.200100000000077,30.353900000000067]},"properties":{"OBJECTID":94,"Governorate":"Al Qalyubia","District":"Tokh","Crop":"Oranges","Season":"Nili","Year":2021,"Cultivated_Area_Feddan":354.45999999999998,"Production_Tons":614.26999999999998,"Latitude":30.353899999999999,"Longitude":31.200099999999999}},{"type":"Feature","id":95,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":95,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Oranges","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":234.81999999999999,"Production_Tons":224.97999999999999,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":96,"geometry":{"type":"Point","coordinates":[31.369300000000067,30.217400000000055]},"properties":{"OBJECTID":96,"Governorate":"Al Qalyubia","District":"El Khanka","Crop":"Wheat","Season":"Winter","Year":2021,"Cultivated_Area_Feddan":43.799999999999997,"Production_Tons":84.829999999999998,"Latitude":30.217400000000001,"Longitude":31.369299999999999}},{"type":"Feature","id":97,"geometry":{"type":"Point","coordinates":[31.205600000000061,30.179400000000044]},"properties":{"OBJECTID":97,"Governorate":"Al Qalyubia","District":"Qalyub","Crop":"Potatoes","Season":"Nili","Year":2023,"Cultivated_Area_Feddan":377.74000000000001,"Production_Tons":432.75999999999999,"Latitude":30.179400000000001,"Longitude":31.2056}},{"type":"Feature","id":98,"geometry":{"type":"Point","coordinates":[31.261400000000037,30.555600000000027]},"properties":{"OBJECTID":98,"Governorate":"Al Qalyubia","District":"Kafr Shukr","Crop":"Oranges","Season":"Summer","Year":2023,"Cultivated_Area_Feddan":85.569999999999993,"Production_Tons":339.97000000000003,"Latitude":30.555599999999998,"Longitude":31.261399999999998}},{"type":"Feature","id":99,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":99,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Rice","Season":"Winter","Year":2022,"Cultivated_Area_Feddan":349.63999999999999,"Production_Tons":838.70000000000005,"Latitude":30.4663,"Longitude":31.184699999999999}},{"type":"Feature","id":100,"geometry":{"type":"Point","coordinates":[31.184700000000078,30.466300000000047]},"properties":{"OBJECTID":100,"Governorate":"Al Qalyubia","District":"Benha","Crop":"Potatoes","Season":"Nili","Year":2022,"Cultivated_Area_Feddan":399.38,"Production_Tons":1162.9400000000001,"Latitude":30.4663,"Longitude":31.184699999999999}}]}
+
+      // Add GeoJSON data to the map
+      cropsLayer.addData(geojsonData);
+
+      // Aggregation functions
+      function aggregateData(data) {
+        const totals = {
+          totalArea: 0,
+          totalProduction: 0,
+          cropCount: new Set(),
+          areaByCrop: {},
+          productionByCrop: {},
+          productionByYear: {}
+        };
+
+        data.features.forEach(feature => {
+          const props = feature.properties;
+          const crop = props.Crop;
+          const area = props.Cultivated_Area_Feddan || 0;
+          const prod = props.Production_Tons || 0;
+          const year = props.Year;
+
+          totals.totalArea += area;
+          totals.totalProduction += prod;
+          totals.cropCount.add(crop);
+
+          if (!totals.areaByCrop[crop]) totals.areaByCrop[crop] = 0;
+          totals.areaByCrop[crop] += area;
+
+          if (!totals.productionByCrop[crop]) totals.productionByCrop[crop] = 0;
+          totals.productionByCrop[crop] += prod;
+
+          if (year) {
+            if (!totals.productionByYear[year]) totals.productionByYear[year] = 0;
+            totals.productionByYear[year] += prod;
+          }
+        });
+
+        totals.cropCount = totals.cropCount.size;
+        return totals;
+      }
+
+      const totals = aggregateData(geojsonData);
+
+      // Update dashboard text
+      //document.getElementById('totalArea').textContent = totals.totalArea.toFixed(2) + ' فدان';
+      document.getElementById('totalProduction').textContent = totals.totalProduction.toFixed(2) + ' طن';
+      document.getElementById('cropCount').textContent = totals.cropCount;
+
+      // Helper to get translated labels
+      function getTranslatedLabels(obj) {
+        return Object.keys(obj).map(key => cropTranslations[key] || key);
+      }
+
+      // Chart Data
+      const areaLabels = getTranslatedLabels(totals.areaByCrop);
+      const areaData = Object.values(totals.areaByCrop);
+
+      const productionLabels = getTranslatedLabels(totals.productionByCrop);
+      const productionData = Object.values(totals.productionByCrop);
+
+      const productionYears = Object.keys(totals.productionByYear).sort();
+      const productionYearData = productionYears.map(year => totals.productionByYear[year]);
+
+      // Pie chart for Production by Crop
+      const ctxProdPie = document.getElementById('pieChartProduction').getContext('2d');
+      const pieChartProduction = new Chart(ctxProdPie, {
+        type: 'pie',
+        data: {
+          labels: productionLabels,
+          datasets: [{
+            data: productionData,
+            backgroundColor: ['#66bb6a','#ffa726','#29b6f6','#ab47bc','#ff7043','#26a69a'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { position: 'right' },
+            tooltip: { enabled: true }
+          },
+          responsive: true
+        }
+      });
+
+      // Pie chart for Area by Crop
+      const ctxAreaPie = document.getElementById('pieChartArea').getContext('2d');
+      const pieChartArea = new Chart(ctxAreaPie, {
+        type: 'pie',
+        data: {
+          labels: areaLabels,
+          datasets: [{
+            data: areaData,
+            backgroundColor: ['#66bb6a','#ffa726','#29b6f6','#ab47bc','#ff7043','#26a69a'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { position: 'right' },
+            tooltip: { enabled: true }
+          },
+          responsive: true
+        }
+      });
+
+      // Bar chart Production by Crop
+      const ctxBar = document.getElementById('barChart').getContext('2d');
+      const barChart = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+          labels: productionLabels,
+          datasets: [{
+            label: 'الإنتاج بالطن',
+            data: productionData,
+            backgroundColor: '#2e7d32'
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: { display: true, text: 'الإنتاج (طن)' }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: true }
+          },
+          responsive: true
+        }
+      });
+
+      // Line chart Production by Year
+      const ctxLine = document.getElementById('lineChart').getContext('2d');
+      const lineChart = new Chart(ctxLine, {
+        type: 'line',
+        data: {
+          labels: productionYears,
+          datasets: [{
+            label: 'الإنتاج السنوي الكلي (طن)',
+            data: productionYearData,
+            borderColor: '#388e3c',
+            backgroundColor: 'rgba(56, 142, 60, 0.2)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 5,
+            pointHoverRadius: 7
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: 'الإنتاج (طن)' }
+            }
+          },
+          plugins: {
+            legend: { position: 'top' },
+            tooltip: { enabled: true }
+          },
+          responsive: true
+        }
+      });
+    </script>
+  </body>
+</html>

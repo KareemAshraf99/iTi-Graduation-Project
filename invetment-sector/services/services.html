@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>محافظة القليوبية - لوحة تحكم الخدمات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+      body {
+        font-family: 'Cairo', sans-serif;
+        margin: 0;
+        background: #f4f4f4;
+        direction: rtl;
+      }
+      header {
+        background: linear-gradient(to left, #1f2020, #51071e);
+        color: white;
+        padding: 1rem;
+        text-align: center;
+      }
+      .dashboard {
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+      .card {
+        background: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      .card h3 {
+        margin-bottom: 0.5rem;
+        color: #51071e;
+      }
+      .card p {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .back {
+        display: block;
+        text-align: center;
+        margin: 2rem 0;
+        color: #51071e;
+        text-decoration: none;
+      }
+      .back:hover {
+        text-decoration: underline;
+      }
+      #map {
+        height: 600px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin: 0 47px;
+        margin-bottom: 15px;
+      }
+      .charts-dashboard {
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+      .chart-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .chart-card h2 {
+        color: #2e7d32;
+        margin-bottom: 1.5rem;
+        font-size: 1.6rem;
+        font-weight: 700;
+      }
+      .chart-canvas-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        position: relative;
+        height: 300px;
+      }
+      @media (max-width: 768px) {
+        .charts-dashboard {
+          padding: 1rem;
+          grid-template-columns: 1fr;
+        }
+        .chart-card {
+          padding: 1rem;
+        }
+        .chart-card h2 {
+          font-size: 1.4rem;
+        }
+        .chart-canvas-container {
+          height: 250px;
+        }
+      }
+      .leaflet-control-layers-base label,
+      .leaflet-control-layers-overlays label {
+        font-family: 'Cairo', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1 id="main-title">المستشفيات</h1>
+      <p id="main-subtitle">عرض لأهم مؤشرات المستشفيات في محافظة القليوبية</p>
+    </header>
+
+    <section class="dashboard">
+      <div class="card">
+        <h3 id="card1-title">إجمالي المستشفيات</h3>
+        <p id="total-count">0</p>
+      </div>
+      <div class="card">
+        <h3 id="card2-title">إجمالي الأسرة</h3>
+        <p id="total-metric">0</p>
+      </div>
+      <div class="card">
+        <h3 id="card3-title">متوسط الأسرة لكل مستشفى</h3>
+        <p id="avg-metric">0</p>
+      </div>
+      <div class="card">
+        <h3 id="card4-title">عدد خدمات الطوارئ</h3>
+        <p id="specific-service-count">0</p>
+      </div>
+    </section>
+
+    <section id="map"></section>
+
+    <section class="charts-dashboard">
+      <div class="chart-card">
+        <h2 id="chart1-title">عدد الأسرة لكل مستشفى</h2>
+        <div class="chart-canvas-container">
+          <canvas id="mainChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h2 id="chart2-title">توزيع الخدمات الطبية</h2>
+        <div class="chart-canvas-container">
+          <canvas id="secondaryChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <a href="http://127.0.0.1:5500/homepage/Home.html" class="back">⟵ الرجوع إلى الصفحة الرئيسية</a>
+
+    <script>
+      // Global Chart.js defaults for consistent styling
+      Chart.defaults.font.family = 'Cairo, sans-serif';
+      Chart.defaults.font.size = 12;
+      Chart.defaults.color = '#333';
+
+      // Define a custom color palette
+      const primaryColor = 'rgba(46, 125, 50, 0.7)';
+      const primaryColorBorder = 'rgba(46, 125, 50, 1)';
+      const secondaryColors = [
+        'rgba(255, 159, 64, 0.7)',
+        'rgba(54, 162, 235, 0.7)',
+        'rgba(75, 192, 192, 0.7)',
+        'rgba(153, 102, 255, 0.7)',
+        'rgba(255, 99, 132, 0.7)',
+        'rgba(201, 203, 207, 0.7)',
+        'rgba(255, 205, 86, 0.7)'
+      ];
+      const secondaryBorderColors = [
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(201, 203, 207, 1)',
+        'rgba(255, 205, 86, 1)'
+      ];
+
+      // Center ID to name mapping for Qalyubia Governorate
+      const centerNames = {
+        '1': 'بنها',
+        '2': 'شبرا الخيمة',
+        '3': 'القناطر الخيرية',
+        '4': 'الخانكة',
+        '5': 'كفر شكر',
+        '6': 'قليوب',
+        '7': 'الخصوص',
+        '8': 'طوخ',
+        '9': 'شبين القناطر'
+      };
+
+      // Initialize Leaflet map
+      const map = L.map('map').setView([30.3, 31.25], 10);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      let mainChartInstance = null;
+      let secondaryChartInstance = null;
+      let geoJsonLayers = {};
+      let currentLayerName = 'المستشفيات';
+
+      // Define the data for each layer
+      const servicesData = {
+        'المستشفيات': {
+          geojsonFile: './hospitals.geojson',
+          mainTitle: 'المستشفيات',
+          subtitle: 'عرض لأهم مؤشرات المستشفيات في محافظة القليوبية',
+          card1: { title: 'إجمالي المستشفيات', prop: null, type: 'count', unit: ' مستشفى' },
+          card2: { title: 'إجمالي الأسرة', prop: 'السرا', type: 'sum', unit: ' سرير' },
+          card3: { title: 'متوسط الأسرة لكل مستشفى', prop: 'السرا', type: 'avg', unit: ' سرير' },
+          card4: { title: 'عدد خدمات الطوارئ', prop: 'الخدم', type: 'filter_includes', filterValue: 'طوارئ', unit: ' خدمة' },
+          chart1: { title: 'عدد الأسرة لكل مستشفى', labelProp: 'الاسم', dataProp: 'السرا', type: 'bar', xAxisTitle: 'اسم المستشفى', yAxisTitle: 'عدد الأسرة' },
+          chart2: { title: 'توزيع الخدمات الطبية', labelProp: 'الخدم', type: 'pie', separator: '،' },
+          popup: (props) => `<b>${props['الاسم'] || 'غير معروف'}</b><br><b>الخدمات:</b> ${props['الخدم'] || 'غير متوفر'}<br><b>العنوان:</b> ${props['العنو'] || 'غير متوفر'}`
+        },
+        'الخدمات': {
+          geojsonFile: './servies.geojson',
+          mainTitle: 'الخدمات',
+          subtitle: 'عرض لأهم مؤشرات الخدمات في محافظة القليوبية',
+          card1: { title: 'المركز الأكثر خدمات', prop: 'المركز', type: 'most_common', unit: '' },
+          card2: { title: 'عدد المطاعم', prop: 'النوع', type: 'filter_equals', filterValue: '1', unit: ' مطعم' },
+          card3: { title: 'عدد الكافيهات', prop: 'النوع', type: 'filter_equals', filterValue: '2', unit: ' كافيه' },
+          card4: { title: 'عدد أماكن الترفيه', prop: 'النوع', type: 'filter_equals', filterValue: '8', unit: ' مكان' },
+          chart1: { title: 'توزيع الخدمات حسب المركز', labelProp: 'المركز', dataProp: 'المركز', type: 'bar', xAxisTitle: 'المركز', yAxisTitle: 'عدد الخدمات' },
+          chart2: { title: 'توزيع أنواع الخدمات', labelProp: 'النوع', type: 'pie', separator: ',' },
+          popup: (props) => `<b>${props['الاسم'] || 'غير معروف'}</b><br><b>النوع:</b> ${props['النوع'] === '1' ? 'مطعم' : props['النوع'] === '2' ? 'كافيه' : props['النوع'] === '8' ? 'ترفيه' : 'غير معروف'}<br><b>المركز:</b> ${centerNames[props['المركز']] || props['المركز'] || 'غير متوفر'}`
+        }
+      };
+
+      // Function to find the most common center
+      function getMostCommonCenter(features) {
+        const centerCounts = {};
+        features.forEach(item => {
+          const center = item.properties['المركز'] || 'غير معروف';
+          centerCounts[center] = (centerCounts[center] || 0) + 1;
+        });
+        let maxCount = 0;
+        let mostCommonCenter = 'غير معروف';
+        Object.entries(centerCounts).forEach(([center, count]) => {
+          if (count > maxCount) {
+            maxCount = count;
+            mostCommonCenter = center;
+          }
+        });
+        return centerNames[mostCommonCenter] || mostCommonCenter;
+      }
+
+      // Function to update dashboard cards based on current data
+      function updateDashboardCards(features, config) {
+        let totalCount;
+        if (config.card1.type === 'count') {
+          totalCount = features.length;
+          document.getElementById('total-count').textContent = totalCount + (config.card1.unit || '');
+        } else if (config.card1.type === 'most_common' && config.card1.prop) {
+          totalCount = getMostCommonCenter(features);
+          document.getElementById('total-count').textContent = totalCount;
+        }
+        document.getElementById('card1-title').textContent = config.card1.title;
+
+        let totalMetric = 0;
+        if (config.card2.type === 'sum' && config.card2.prop) {
+          totalMetric = features.reduce((sum, item) => sum + (parseFloat(item.properties[config.card2.prop]) || 0), 0);
+        } else if (config.card2.type === 'filter_equals' && config.card2.prop) {
+          totalMetric = features.filter(item => item.properties[config.card2.prop] === config.card2.filterValue).length;
+        }
+        document.getElementById('total-metric').textContent = totalMetric + (config.card2.unit || '');
+        document.getElementById('card2-title').textContent = config.card2.title;
+
+        let avgMetric = 0;
+        if (config.card3.type === 'avg' && config.card3.prop && features.length > 0) {
+          const sumForAvg = features.reduce((sum, item) => sum + (parseFloat(item.properties[config.card3.prop]) || 0), 0);
+          avgMetric = (sumForAvg / features.length).toFixed(2);
+        } else if (config.card3.type === 'filter_equals' && config.card3.prop) {
+          avgMetric = features.filter(item => item.properties[config.card3.prop] === config.card3.filterValue).length;
+        }
+        document.getElementById('avg-metric').textContent = avgMetric + (config.card3.unit || '');
+        document.getElementById('card3-title').textContent = config.card3.title;
+
+        let specificServiceCount = 0;
+        if (config.card4.type === 'filter_includes' && config.card4.prop) {
+          specificServiceCount = features.filter(item =>
+            item.properties[config.card4.prop]?.includes(config.card4.filterValue)
+          ).length;
+        } else if (config.card4.type === 'filter_equals' && config.card4.prop) {
+          specificServiceCount = features.filter(item => item.properties[config.card4.prop] === config.card4.filterValue).length;
+        }
+        document.getElementById('specific-service-count').textContent = specificServiceCount + (config.card4.unit || '');
+        document.getElementById('card4-title').textContent = config.card4.title;
+      }
+
+      // Function to update charts based on current data
+      function updateCharts(features, config, layerName) {
+        if (mainChartInstance) mainChartInstance.destroy();
+        if (secondaryChartInstance) secondaryChartInstance.destroy();
+
+        document.getElementById('chart1-title').textContent = config.chart1.title;
+        document.getElementById('chart2-title').textContent = config.chart2.title;
+
+        // Chart 1: Bar chart
+        let chart1Labels, chart1Data;
+        if (layerName === 'الخدمات') {
+          const counts = {};
+          features.forEach(item => {
+            const centerId = item.properties[config.chart1.labelProp] || 'غير معروف';
+            const label = centerNames[centerId] || centerId;
+            counts[label] = (counts[label] || 0) + 1;
+          });
+          chart1Labels = Object.keys(counts).sort();
+          chart1Data = chart1Labels.map(label => counts[label]);
+        } else {
+          chart1Labels = features.map(item => item.properties[config.chart1.labelProp] || 'غير معروف');
+          chart1Data = features.map(item => parseFloat(item.properties[config.chart1.dataProp]) || 0);
+        }
+
+        mainChartInstance = new Chart(document.getElementById('mainChart'), {
+          type: config.chart1.type,
+          data: {
+            labels: chart1Labels,
+            datasets: [{
+              label: config.chart1.title,
+              data: chart1Data,
+              backgroundColor: primaryColor,
+              borderColor: primaryColorBorder,
+              borderWidth: 1,
+              borderRadius: 5,
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: { display: true, text: config.chart1.yAxisTitle, font: { weight: 'bold' } },
+                ticks: { precision: 0 }
+              },
+              x: {
+                title: { display: true, text: config.chart1.xAxisTitle, font: { weight: 'bold' } },
+                ticks: { autoSkip: true, maxRotation: 45, minRotation: 45, font: { size: 10 } }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    let label = context.dataset.label || '';
+                    if (label) { label += ': '; }
+                    if (context.parsed.y !== null) { label += context.parsed.y + (config.card2.unit || ''); }
+                    return label;
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        // Chart 2: Pie chart
+        const chart2Counts = {};
+        features.forEach(item => {
+          let rawProp = item.properties[config.chart2.labelProp];
+          if (rawProp) {
+            const labels = (config.chart2.separator ? rawProp.split(config.chart2.separator).map(s => s.trim()) : [rawProp]).filter(s => s);
+            labels.forEach(label => {
+              const displayLabel = layerName === 'الخدمات' ? 
+                (label === '1' ? 'مطعم' : label === '2' ? 'كافيه' : label === '8' ? 'ترفيه' : label) : label;
+              chart2Counts[displayLabel] = (chart2Counts[displayLabel] || 0) + 1;
+            });
+          }
+        });
+        const chart2Labels = Object.keys(chart2Counts);
+        const chart2Data = Object.values(chart2Counts);
+
+        secondaryChartInstance = new Chart(document.getElementById('secondaryChart'), {
+          type: config.chart2.type,
+          data: {
+            labels: chart2Labels,
+            datasets: [{
+              label: config.chart2.title,
+              data: chart2Data,
+              backgroundColor: secondaryColors,
+              borderColor: secondaryBorderColors,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'right',
+                labels: { padding: 20, boxWidth: 20 }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    let label = context.label || '';
+                    if (context.parsed !== null) {
+                      const total = context.dataset.data.reduce((sum, current) => sum + current, 0);
+                      const percentage = ((context.parsed / total) * 100).toFixed(1) + '%';
+                      label += `: ${context.parsed} (${percentage})`;
+                    }
+                    return label;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Function to load and display GeoJSON layer and update dashboard/charts
+      function loadLayerAndData(layerName) {
+        const config = servicesData[layerName];
+        if (!config) {
+          console.error('Configuration not found for layer:', layerName);
+          return;
+        }
+
+        // Update main titles
+        document.getElementById('main-title').textContent = config.mainTitle;
+        document.getElementById('main-subtitle').textContent = config.subtitle;
+
+        // Clear existing layers
+        Object.values(geoJsonLayers).forEach(layer => map.removeLayer(layer));
+        geoJsonLayers = {};
+
+        // Fetch GeoJSON data
+        fetch(config.geojsonFile)
+          .then(response => {
+            if (!response.ok) throw new Error('Failed to load GeoJSON file');
+            return response.json();
+          })
+          .then(data => {
+            const features = data.features || [];
+            const bounds = L.latLngBounds();
+
+            // Create new GeoJSON layer
+            const geoJsonLayer = L.geoJSON(data, {
+              pointToLayer: function (feature, latlng) {
+                bounds.extend(latlng);
+                return L.marker(latlng);
+              },
+              onEachFeature: function (feature, layer) {
+                const props = feature.properties;
+                layer.bindPopup(config.popup(props));
+              }
+            });
+
+            geoJsonLayers[layerName] = geoJsonLayer;
+            if (layerName === currentLayerName) {
+              geoJsonLayer.addTo(map);
+              if (bounds.isValid()) {
+                map.fitBounds(bounds, { padding: [50, 50] });
+              } else {
+                map.setView([30.3, 31.25], 10);
+              }
+            }
+
+            // Update dashboard and charts
+            updateDashboardCards(features, config);
+            updateCharts(features, config, layerName);
+          })
+          .catch(error => {
+            console.error(`Error loading ${config.geojsonFile}:`, error);
+            document.getElementById('total-count').textContent = 'خطأ';
+            document.getElementById('total-metric').textContent = 'خطأ';
+            document.getElementById('avg-metric').textContent = 'خطأ';
+            document.getElementById('specific-service-count').textContent = 'خطأ';
+            if (mainChartInstance) mainChartInstance.destroy();
+            if (secondaryChartInstance) secondaryChartInstance.destroy();
+          });
+      }
+
+      // Add Layer Control to Leaflet map
+      const baseLayers = {
+        "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        })
+      };
+
+      const overlayMaps = {
+        'المستشفيات': L.geoJSON(),
+        'الخدمات': L.geoJSON()
+      };
+
+      const layerControl = L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
+
+      // Event listener for layer change
+      map.on('overlayadd', function (event) {
+        currentLayerName = event.name;
+        loadLayerAndData(event.name);
+      });
+
+      map.on('overlayremove', function (event) {
+        if (Object.values(overlayMaps).every(layer => !map.hasLayer(layer))) {
+          currentLayerName = null;
+          Object.values(geoJsonLayers).forEach(layer => map.removeLayer(layer));
+          geoJsonLayers = {};
+          map.setView([30.3, 31.25], 10);
+          document.getElementById('total-count').textContent = '0';
+          document.getElementById('total-metric').textContent = '0';
+          document.getElementById('avg-metric').textContent = '0';
+          document.getElementById('specific-service-count').textContent = '0';
+          if (mainChartInstance) mainChartInstance.destroy();
+          if (secondaryChartInstance) secondaryChartInstance.destroy();
+        }
+      });
+
+      // Load the default layer
+      baseLayers["OpenStreetMap"].addTo(map);
+      loadLayerAndData('المستشفيات');
+      map.addLayer(overlayMaps['المستشفيات']);
+    </script>
+  </body>
+</html>

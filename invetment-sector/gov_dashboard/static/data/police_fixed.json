@@ -1,0 +1,22 @@
+{
+"type": "FeatureCollection",
+"name": "police_fixed",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "FID": 0, "x": 31.17833, "y": 30.462452, "z": "قسم شرطة بنها أول" }, "geometry": { "type": "Point", "coordinates": [ 31.17833, 30.462452 ] } },
+{ "type": "Feature", "properties": { "FID": 1, "x": 31.182227, "y": 30.47848, "z": "قسم شرطة بنها ثانى" }, "geometry": { "type": "Point", "coordinates": [ 31.182227, 30.47848 ] } },
+{ "type": "Feature", "properties": { "FID": 2, "x": 31.171209, "y": 30.440333, "z": "مركز شرطة بنها" }, "geometry": { "type": "Point", "coordinates": [ 31.171209, 30.440333 ] } },
+{ "type": "Feature", "properties": { "FID": 3, "x": 31.19725, "y": 30.358384, "z": "قسم شرطة طوخ" }, "geometry": { "type": "Point", "coordinates": [ 31.19725, 30.358384 ] } },
+{ "type": "Feature", "properties": { "FID": 4, "x": 31.204498, "y": 30.286286, "z": "قسم شرطة قها" }, "geometry": { "type": "Point", "coordinates": [ 31.204498, 30.286286 ] } },
+{ "type": "Feature", "properties": { "FID": 5, "x": 31.224474, "y": 30.1825, "z": "قسم شرطة قليوب" }, "geometry": { "type": "Point", "coordinates": [ 31.224474, 30.1825 ] } },
+{ "type": "Feature", "properties": { "FID": 6, "x": 31.24356, "y": 30.120209, "z": "قسم شرطة شبرا الخيمة اول" }, "geometry": { "type": "Point", "coordinates": [ 31.24356, 30.120209 ] } },
+{ "type": "Feature", "properties": { "FID": 7, "x": 31.270461, "y": 30.131781, "z": "قسم شرطة شبرا الخيمة ثانى" }, "geometry": { "type": "Point", "coordinates": [ 31.270461, 30.131781 ] } },
+{ "type": "Feature", "properties": { "FID": 8, "x": 31.314479, "y": 30.314104, "z": "مركز شرطة شبين القناطر" }, "geometry": { "type": "Point", "coordinates": [ 31.314479, 30.314104 ] } },
+{ "type": "Feature", "properties": { "FID": 9, "x": 31.12311, "y": 30.193914, "z": " مركز شرطة القناطر الخيرية" }, "geometry": { "type": "Point", "coordinates": [ 31.12311, 30.193914 ] } },
+{ "type": "Feature", "properties": { "FID": 10, "x": 31.36256, "y": 30.228915, "z": " مركز شرطة الخانكة" }, "geometry": { "type": "Point", "coordinates": [ 31.36256, 30.228915 ] } },
+{ "type": "Feature", "properties": { "FID": 11, "x": 31.31739, "y": 30.158161, "z": "قسم شرطة الخصوص" }, "geometry": { "type": "Point", "coordinates": [ 31.31739, 30.158161 ] } },
+{ "type": "Feature", "properties": { "FID": 12, "x": 31.251658, "y": 30.553858, "z": " مركز شرطة كفر شكر" }, "geometry": { "type": "Point", "coordinates": [ 31.251658, 30.553858 ] } },
+{ "type": "Feature", "properties": { "FID": 13, "x": 31.473558, "y": 30.236098, "z": "قسم شرطة مدينة العبور" }, "geometry": { "type": "Point", "coordinates": [ 31.473558, 30.236098 ] } },
+{ "type": "Feature", "properties": { "FID": 14, "x": 31.438741, "y": 30.227586, "z": "قسم شرطة العبور ثانى" }, "geometry": { "type": "Point", "coordinates": [ 31.438741, 30.227586 ] } }
+]
+}
